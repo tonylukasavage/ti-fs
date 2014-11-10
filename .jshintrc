@@ -1,0 +1,32 @@
+{
+	"globals": {
+		"Ti": false,
+		"Titanium": false,
+		"Alloy": false,
+		"describe": false,
+		"it": false,
+		"before": false,
+		"beforeEach": false,
+		"after": false,
+		"afterEach": false,
+		"mocha": false
+	},
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": true,
+	"immed": true,
+	"indent": 4,
+	"latedef": "nofunc",
+	"newcap": true,
+	"noarg": true,
+	"nonew": true,
+	"undef": true,
+	"unused": true,
+	"trailing": true,
+	"loopfunc": true,
+	"proto": true,
+	"node": true,
+	"-W030": true,
+	"-W104": true,
+	"-W068": true
+}

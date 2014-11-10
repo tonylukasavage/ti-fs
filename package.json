@@ -1,0 +1,31 @@
+{
+  "name": "ti-fs",
+  "version": "0.0.0",
+  "description": "node.js-style fs for Titanium",
+  "keywords": [
+    "titanium",
+    "appcelerator",
+    "fs"
+  ],
+  "author": "Tony Lukasavage <anthony.lukasavage@gmail.com>",
+  "repository": "git://github.com/tonylukasavage/ti-fs.git",
+  "main": "./ti-fs.js",
+  "homepage": "https://github.com/tonylukasavage/ti-fs",
+  "bugs": {
+    "url": "https://github.com/tonylukasavage/ti-fs/issues",
+    "email": "anthony.lukasavage@gmail.com"
+  },
+  "licenses": "MIT",
+  "scripts": {
+    "test": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.0.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-titanium": "^0.2.0",
+    "should": "^4.0.4",
+    "ti-mocha": "^0.1.3"
+  }
+}
