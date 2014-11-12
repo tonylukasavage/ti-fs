@@ -5,7 +5,9 @@ exports.Stats = function Stats() {
 };
 
 exports.exists = function exists(path, callback) {
-	return callback(exports.existsSync(path));
+	setTimeout(function() {
+		return callback(exports.existsSync(path));
+	}, 0);
 };
 
 exports.existsSync = function existsSync(path) {
@@ -303,3 +305,9 @@ exports.FileWriteStream = function FileWriteStream(path, options) {
 exports.SyncWriteStream = function SyncWriteStream(fd, options) {
 	throw new Error('SyncWriteStream not yet implemented');
 };
+
+function maybeCallback(o) {
+	return o && Object.prototype.toString.call(o) === '[object Function]' ? o : function(err) {
+		if (err) { throw err; }
+	};
+}
