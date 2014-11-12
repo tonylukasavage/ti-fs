@@ -1,4 +1,5 @@
-var fs = require('ti-fs'),
+var async = require('async'),
+	fs = require('ti-fs'),
 	should = require('should');
 require('ti-mocha');
 
@@ -13,12 +14,27 @@ describe('ti-fs', function() {
 		(function() { fs.Stats(); }).should.throw(/implemented/);
 	});
 
-	it('#exists', function() {
-		(function() { fs.exists(); }).should.throw(/implemented/);
+	it('#exists', function(done) {
+		function test(file, value, callback) {
+			fs.exists(file, function(exists) {
+				exists.should.be[value];
+				return callback();
+			});
+		}
+
+		async.parallel([
+			function(cb) { test('app.js', true, cb); },
+			function(cb) { test('file.txt', true, cb); },
+			function(cb) { test('badfile', false, cb); },
+			function(cb) { test('another/bad/file', false, cb); }
+		], done);
 	});
 
 	it('#existsSync', function() {
-		(function() { fs.existsSync(); }).should.throw(/implemented/);
+		fs.existsSync('app.js').should.be.true;
+		fs.existsSync('file.txt').should.be.true;
+		fs.existsSync('badfile').should.be.false;
+		fs.existsSync('another/bad/file').should.be.false;
 	});
 
 	it('#readFile', function() {

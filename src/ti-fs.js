@@ -1,13 +1,15 @@
+var $F = Ti.Filesystem;
+
 exports.Stats = function Stats() {
 	throw new Error('Stats not yet implemented');
 };
 
 exports.exists = function exists(path, callback) {
-	throw new Error('exists not yet implemented');
+	return callback(exports.existsSync(path));
 };
 
 exports.existsSync = function existsSync(path) {
-	throw new Error('existsSync not yet implemented');
+	return $F.getFile(path).exists();
 };
 
 exports.readFile = function readFile(path, options, callback_) {
