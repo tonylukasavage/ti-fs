@@ -20,8 +20,9 @@ module.exports = function(grunt) {
     ti_run: {
       app: {
         files: {
-          'tmp/app/Resources': ['ti-fs.js', 'test/app.js',
-            'node_modules/should/should.js', 'node_modules/ti-mocha/ti-mocha.js']
+          'tmp/app/Resources': ['ti-fs.js', 'test/app.js', 'test/file.txt',
+            'node_modules/should/should.js', 'node_modules/ti-mocha/ti-mocha.js',
+            'node_modules/async/lib/async.js']
         }
       }
     },

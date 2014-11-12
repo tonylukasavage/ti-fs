@@ -20,6 +20,7 @@
     "test": "grunt"
   },
   "devDependencies": {
+    "async": "^0.9.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.0.0",
     "grunt-contrib-clean": "^0.6.0",
