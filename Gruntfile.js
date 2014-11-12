@@ -45,6 +45,6 @@ module.exports = function(grunt) {
   });
 
   // lint and test node and titanium
-  grunt.registerTask('default', ['jshint', 'browserify', 'finalize', 'ti_run', 'clean']);
+  grunt.registerTask('default', ['clean', 'jshint', 'browserify', 'finalize', 'ti_run']);
 
 };
