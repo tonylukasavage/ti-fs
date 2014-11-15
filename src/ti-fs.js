@@ -1,6 +1,10 @@
 var $F = Ti.Filesystem;
 
 exports.Stats = function Stats() {
+var MODE_MAP = {};
+MODE_MAP['r'] = MODE_MAP['r+'] = MODE_MAP['rs'] = MODE_MAP['rs+'] = $F.MODE_READ;
+MODE_MAP['w'] = MODE_MAP['w+'] = MODE_MAP['wx'] = MODE_MAP['wx+'] = $F.MODE_WRITE;
+MODE_MAP['a'] = MODE_MAP['a+'] = MODE_MAP['ax'] = MODE_MAP['ax+'] = $F.MODE_APPEND;
 	throw new Error('Stats not yet implemented');
 };
 
