@@ -3,7 +3,15 @@ var async = require('async'),
 	should = require('should');
 require('ti-mocha');
 
+// TODO: replace stream.close() calls with fs.close(stream)
+
 describe('ti-fs', function() {
+
+	before(function() {
+		var src = Ti.Filesystem.getFile('file.txt'),
+			dst = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'file.txt');
+		dst.write(src);
+	});
 
 	it('exports module', function() {
 		should.exist(fs);
@@ -53,12 +61,89 @@ describe('ti-fs', function() {
 		(function() { fs.closeSync(); }).should.throw(/implemented/);
 	});
 
-	it('#open', function() {
-		(function() { fs.open(); }).should.throw(/implemented/);
+	describe('#open', function() {
+
+		it('errors on no flag', function(done) {
+			fs.open('file.txt', null, function(err, stream) {
+				should.exist(err);
+				err.message.should.match(/open flag/);
+				return done();
+			});
+		});
+
+		// TODO: log Titanium ticket for the less-than-stellar
+		// "The iOS reported an error" error.
+		it('errors on non-existent file', function(done) {
+			fs.open('bad.file', 'r', function(err, stream) {
+				should.exist(err);
+				return done();
+			});
+		});
+
+		it('opens readable streams', function(done) {
+			async.each(['r', 'r+', 'rs', 'rs+'], function(flag, cb) {
+				fs.open('file.txt', flag, function(err, stream) {
+					should.not.exist(err);
+					stream.apiName.should.equal('Ti.Filesystem.FileStream');
+					stream.isReadable().should.be.true;
+					stream.isWritable().should.be.false;
+					stream.close();
+					return cb();
+				});
+			}, done);
+		});
+
+		it('opens writable streams', function(done) {
+			async.each(['w', 'w+', 'wx', 'wx+', 'a', 'a+', 'ax', 'ax+'], function(flag, cb) {
+				fs.open('file.txt', flag, function(err, stream) {
+					should.not.exist(err);
+					stream.apiName.should.equal('Ti.Filesystem.FileStream');
+					stream.isReadable().should.be.false;
+					stream.isWritable().should.be.true;
+					stream.close();
+					return cb();
+				});
+			}, done);
+		});
+
 	});
 
-	it('#openSync', function() {
-		(function() { fs.openSync(); }).should.throw(/implemented/);
+	describe('#openSync', function() {
+
+		it('errors on no flag', function() {
+			(function() {
+				fs.openSync('file.txt');
+			}).should.throw(/open flag/);
+		});
+
+		// TODO: log Titanium ticket for the less-than-stellar
+		// "The iOS reported an error" error.
+		it('errors on non-existent file', function() {
+			(function() {
+				fs.openSync('bad.file', 'r');
+			}).should.throw();
+		});
+
+		it('opens readable streams', function() {
+			['r', 'r+', 'rs', 'rs+'].forEach(function(flag) {
+				var stream = fs.openSync('file.txt', flag);
+				stream.apiName.should.equal('Ti.Filesystem.FileStream');
+				stream.isReadable().should.be.true;
+				stream.isWritable().should.be.false;
+				stream.close();
+			});
+		});
+
+		it('opens writable streams', function() {
+			['w', 'w+', 'wx', 'wx+', 'a', 'a+', 'ax', 'ax+'].forEach(function(flag) {
+				var stream = fs.openSync(Ti.Filesystem.getFile(
+					Ti.Filesystem.applicationDataDirectory, 'file.txt').resolve(), flag);
+				stream.apiName.should.equal('Ti.Filesystem.FileStream');
+				stream.isReadable().should.be.false;
+				stream.isWritable().should.be.true;
+				stream.close();
+			});
+		});
 	});
 
 	it('#read', function() {
