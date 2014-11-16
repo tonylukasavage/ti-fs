@@ -737,13 +737,6 @@ fs.readFile = function readFile(path, options, callback_) {
 };
 
 fs.readFileSync = function readFileSync(path, options) {
-	// if (!options) {
- //    options = { encoding: null, flag: 'r' };
- //  } else if (util.isString(options)) {
- //    options = { encoding: options, flag: 'r' };
- //  } else if (!util.isObject(options)) {
- //    throw new TypeError('Bad arguments');
- //  }
  throw new Error('readFileSync not yet implemented');
 };
 
