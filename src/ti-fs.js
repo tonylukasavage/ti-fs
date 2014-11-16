@@ -30,11 +30,20 @@ fs.readFileSync = function readFileSync(path, options) {
 };
 
 fs.close = function close(fd, callback) {
-	throw new Error('close not yet implemented');
+	setTimeout(function() {
+		var err = null;
+		try {
+			fd.close();
+		} catch (e) {
+			err = e;
+		}
+		console.log(callback);
+		return callback(err);
+	}, 0);
 };
 
 fs.closeSync = function closeSync(fd) {
-	throw new Error('closeSync not yet implemented');
+	fd.close();
 };
 
 fs.open = function open(path, flags, mode, callback) {
