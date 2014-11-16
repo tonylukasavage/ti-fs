@@ -3,7 +3,7 @@ var async = require('async'),
 	should = require('should');
 require('ti-mocha');
 
-// TODO: replace stream.close() calls with fs.close(stream)
+// TODO: replace fd.close() calls with fs.close(fd)
 
 describe('ti-fs', function() {
 
@@ -64,7 +64,7 @@ describe('ti-fs', function() {
 	describe('#open', function() {
 
 		it('errors on no flag', function(done) {
-			fs.open('file.txt', null, function(err, stream) {
+			fs.open('file.txt', null, function(err, fd) {
 				should.exist(err);
 				err.message.should.match(/open flag/);
 				return done();
@@ -74,33 +74,33 @@ describe('ti-fs', function() {
 		// TODO: log Titanium ticket for the less-than-stellar
 		// "The iOS reported an error" error.
 		it('errors on non-existent file', function(done) {
-			fs.open('bad.file', 'r', function(err, stream) {
+			fs.open('bad.file', 'r', function(err, fd) {
 				should.exist(err);
 				return done();
 			});
 		});
 
-		it('opens readable streams', function(done) {
+		it('opens readable fds', function(done) {
 			async.each(['r', 'r+', 'rs', 'rs+'], function(flag, cb) {
-				fs.open('file.txt', flag, function(err, stream) {
+				fs.open('file.txt', flag, function(err, fd) {
 					should.not.exist(err);
-					stream.apiName.should.equal('Ti.Filesystem.FileStream');
-					stream.isReadable().should.be.true;
-					stream.isWritable().should.be.false;
-					stream.close();
+					fd.apiName.should.equal('Ti.Filesystem.FileStream');
+					fd.isReadable().should.be.true;
+					fd.isWritable().should.be.false;
+					fd.close();
 					return cb();
 				});
 			}, done);
 		});
 
-		it('opens writable streams', function(done) {
+		it('opens writable fds', function(done) {
 			async.each(['w', 'w+', 'wx', 'wx+', 'a', 'a+', 'ax', 'ax+'], function(flag, cb) {
-				fs.open('file.txt', flag, function(err, stream) {
+				fs.open('file.txt', flag, function(err, fd) {
 					should.not.exist(err);
-					stream.apiName.should.equal('Ti.Filesystem.FileStream');
-					stream.isReadable().should.be.false;
-					stream.isWritable().should.be.true;
-					stream.close();
+					fd.apiName.should.equal('Ti.Filesystem.FileStream');
+					fd.isReadable().should.be.false;
+					fd.isWritable().should.be.true;
+					fd.close();
 					return cb();
 				});
 			}, done);
@@ -124,24 +124,24 @@ describe('ti-fs', function() {
 			}).should.throw();
 		});
 
-		it('opens readable streams', function() {
+		it('opens readable fds', function() {
 			['r', 'r+', 'rs', 'rs+'].forEach(function(flag) {
-				var stream = fs.openSync('file.txt', flag);
-				stream.apiName.should.equal('Ti.Filesystem.FileStream');
-				stream.isReadable().should.be.true;
-				stream.isWritable().should.be.false;
-				stream.close();
+				var fd = fs.openSync('file.txt', flag);
+				fd.apiName.should.equal('Ti.Filesystem.FileStream');
+				fd.isReadable().should.be.true;
+				fd.isWritable().should.be.false;
+				fd.close();
 			});
 		});
 
-		it('opens writable streams', function() {
+		it('opens writable fds', function() {
 			['w', 'w+', 'wx', 'wx+', 'a', 'a+', 'ax', 'ax+'].forEach(function(flag) {
-				var stream = fs.openSync(Ti.Filesystem.getFile(
+				var fd = fs.openSync(Ti.Filesystem.getFile(
 					Ti.Filesystem.applicationDataDirectory, 'file.txt').resolve(), flag);
-				stream.apiName.should.equal('Ti.Filesystem.FileStream');
-				stream.isReadable().should.be.false;
-				stream.isWritable().should.be.true;
-				stream.close();
+				fd.apiName.should.equal('Ti.Filesystem.FileStream');
+				fd.isReadable().should.be.false;
+				fd.isWritable().should.be.true;
+				fd.close();
 			});
 		});
 	});
