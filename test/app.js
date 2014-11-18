@@ -5,8 +5,6 @@ require('ti-mocha');
 
 var FILE = 'file.txt';
 
-// TODO: replace fd.close() calls with fs.close(fd)
-
 describe('ti-fs', function() {
 
 	before(function() {
@@ -134,8 +132,10 @@ describe('ti-fs', function() {
 					fd.apiName.should.equal('Ti.Filesystem.FileStream');
 					fd.isReadable().should.be.true;
 					fd.isWritable().should.be.false;
-					fd.close();
-					return cb();
+					fs.close(fd, function(err) {
+						should.not.exist(err);
+						return cb();
+					});
 				});
 			}, done);
 		});
@@ -147,8 +147,10 @@ describe('ti-fs', function() {
 					fd.apiName.should.equal('Ti.Filesystem.FileStream');
 					fd.isReadable().should.be.false;
 					fd.isWritable().should.be.true;
-					fd.close();
-					return cb();
+					fs.close(fd, function(err) {
+						should.not.exist(err);
+						return cb();
+					});
 				});
 			}, done);
 		});
@@ -177,7 +179,7 @@ describe('ti-fs', function() {
 				fd.apiName.should.equal('Ti.Filesystem.FileStream');
 				fd.isReadable().should.be.true;
 				fd.isWritable().should.be.false;
-				fd.close();
+				fs.closeSync(fd);
 			});
 		});
 
@@ -188,7 +190,7 @@ describe('ti-fs', function() {
 				fd.apiName.should.equal('Ti.Filesystem.FileStream');
 				fd.isReadable().should.be.false;
 				fd.isWritable().should.be.true;
-				fd.close();
+				fs.closeSync(fd);
 			});
 		});
 	});
