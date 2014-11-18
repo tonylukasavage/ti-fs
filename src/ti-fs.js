@@ -37,7 +37,6 @@ fs.close = function close(fd, callback) {
 		} catch (e) {
 			err = e;
 		}
-		console.log(callback);
 		return callback(err);
 	}, 0);
 };
