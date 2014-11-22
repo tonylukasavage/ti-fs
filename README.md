@@ -1,6 +1,6 @@
 # ti-fs ![implemented 8%](http://img.shields.io/badge/implemented-8%-red.svg)
 
-node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `console` for use with [browserify][].
+node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `fs` for use with [browserify][].
 
 ## install
 
