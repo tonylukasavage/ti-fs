@@ -1,7 +1,5 @@
 # ti-fs ![implemented 8%](http://img.shields.io/badge/implemented-8%-red.svg)
 
-> **IMPORTANT:** This is highly experimental and incomplete. Currently this is being used solely with [triple](https://github.com/tonylukasavage/triple), but I'll happily take PRs for additional functionality.
-
 node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `console` for use with [browserify][].
 
 ## install
