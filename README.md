@@ -1,4 +1,4 @@
-# ti-fs
+# ti-fs ![implemented 8%](http://img.shields.io/badge/implemented-8%-red.svg)
 
 > **IMPORTANT:** This is highly experimental and incomplete. Currently this is being used solely with [triple](https://github.com/tonylukasavage/triple), but I'll happily take PRs for additional functionality.
 
