@@ -19,9 +19,6 @@ module.exports = function(grunt) {
     },
     ti_run: {
       app: {
-        options: {
-          success: 'TESTS COMPLETE'
-        },
         files: {
           'tmp/app/Resources': ['ti-fs.js', 'test/app.js', 'test/file.txt',
             'node_modules/should/should.js', 'node_modules/ti-mocha/ti-mocha.js',
@@ -49,6 +46,6 @@ module.exports = function(grunt) {
   });
 
   // lint and test node and titanium
-  grunt.registerTask('default', ['clean', 'jshint', 'browserify', 'finalize', 'ti_run', 'clean']);
+  grunt.registerTask('default', ['clean', 'jshint', 'browserify', 'finalize', 'ti_run']);
 
 };
