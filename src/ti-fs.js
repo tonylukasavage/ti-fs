@@ -9,19 +9,25 @@ MODE_MAP['w'] = MODE_MAP['w+'] = MODE_MAP['wx'] = MODE_MAP['wx+'] = $F.MODE_WRIT
 MODE_MAP['a'] = MODE_MAP['a+'] = MODE_MAP['ax'] = MODE_MAP['ax+'] = $F.MODE_APPEND;
 
 fs.Stats = function Stats(path) {
-	this.__file = $F.getFile(path);
+	this.__file = null;
 	this.dev = 0;
 	this.ino = 0;
-	this.mode = 0; // TODO: try to get a basic owner mode based on Ti API
 	this.nlink = 0;
 	this.uid = 0;
 	this.gid = 0;
 	this.rdev = 0;
-	this.size = this.__file.size;
+	this.size = 0;
 	this.blksize = 4096;
 	this.blocks = 8;
-	this.ctime = new Date(this.__file.createTimestamp());
-	this.atime = this.mtime = new Date(this.__file.modificationTimestamp());
+	this.ctime = this.atime = this.mtime = 0;
+
+	if (path) {
+		this.__file = $F.getFile(path);
+		this.size = this.__file.size;
+		this.mode = 0; // TODO: try to get a basic owner mode based on Ti API
+		this.ctime = new Date(this.__file.createTimestamp());
+		this.atime = this.mtime = new Date(this.__file.modificationTimestamp());
+	}
 };
 
 fs.Stats.prototype.isDirectory = function(property) {
