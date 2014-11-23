@@ -13,8 +13,34 @@ describe('ti-fs', function() {
 		dst.write(src);
 	});
 
-	it.skip('#Stats', function() {
-		(function() { fs.Stats(); }).should.throw(/implemented/);
+	it('#Stats contain file attributes', function() {
+		var stats = new fs.Stats('file.txt');
+		stats.__file.apiName.should.equal('Ti.Filesystem.File');
+		stats.dev.should.equal(0);
+		stats.ino.should.equal(0);
+		stats.mode.should.equal(0);
+		stats.nlink.should.equal(0);
+		stats.uid.should.equal(0);
+		stats.gid.should.equal(0);
+		stats.rdev.should.equal(0);
+		stats.blksize.should.equal(4096);
+		stats.blocks.should.equal(8);
+		stats.size.should.equal(16);
+		stats.atime.should.be.a.Date;
+		stats.ctime.should.be.a.Date;
+		stats.mtime.should.be.a.Date;
+		stats.isDirectory().should.be.false;
+		stats.isFile().should.be.true;
+		stats.isBlockDevice().should.be.false;
+		stats.isCharacterDevice().should.be.false;
+		stats.isFIFO().should.be.false;
+		stats.isSocket().should.be.false;
+
+		if (Ti.Platform.name === 'iPhone OS') {
+			stats.isSymbolicLink().should.be.true;
+		} else {
+			stats.isSymbolicLink().should.be.false;
+		}
 	});
 
 	it('#exists', function(done) {

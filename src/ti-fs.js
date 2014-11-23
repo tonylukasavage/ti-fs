@@ -1,5 +1,6 @@
 var $F = Ti.Filesystem,
 	fs = exports,
+	buffer = require('buffer'),
 	util = require('util');
 
 var MODE_MAP = {};
@@ -7,8 +8,48 @@ MODE_MAP['r'] = MODE_MAP['r+'] = MODE_MAP['rs'] = MODE_MAP['rs+'] = $F.MODE_READ
 MODE_MAP['w'] = MODE_MAP['w+'] = MODE_MAP['wx'] = MODE_MAP['wx+'] = $F.MODE_WRITE;
 MODE_MAP['a'] = MODE_MAP['a+'] = MODE_MAP['ax'] = MODE_MAP['ax+'] = $F.MODE_APPEND;
 
-fs.Stats = function Stats() {
-	throw new Error('Stats not yet implemented');
+fs.Stats = function Stats(path) {
+	this.__file = $F.getFile(path);
+	this.dev = 0;
+	this.ino = 0;
+	this.mode = 0; // TODO: try to get a basic owner mode based on Ti API
+	this.nlink = 0;
+	this.uid = 0;
+	this.gid = 0;
+	this.rdev = 0;
+	this.size = this.__file.size;
+	this.blksize = 4096;
+	this.blocks = 8;
+	this.ctime = new Date(this.__file.createTimestamp());
+	this.atime = this.mtime = new Date(this.__file.modificationTimestamp());
+};
+
+fs.Stats.prototype.isDirectory = function(property) {
+	return this.__file.isDirectory();
+};
+
+fs.Stats.prototype.isFile = function(property) {
+	return this.__file.isFile();
+};
+
+fs.Stats.prototype.isBlockDevice = function(property) {
+	return false;
+};
+
+fs.Stats.prototype.isCharacterDevice = function(property) {
+	return false;
+};
+
+fs.Stats.prototype.isSymbolicLink = function(property) {
+	return this.__file.symbolicLink;
+};
+
+fs.Stats.prototype.isFIFO = function(property) {
+	return false;
+};
+
+fs.Stats.prototype.isSocket = function(property) {
+	return false;
 };
 
 fs.exists = function exists(path, callback) {
@@ -26,7 +67,21 @@ fs.readFile = function readFile(path, options, callback_) {
 };
 
 fs.readFileSync = function readFileSync(path, options) {
- throw new Error('readFileSync not yet implemented');
+	// if (!options) {
+ //    options = { encoding: null, flag: 'r' };
+ //  } else if (util.isString(options)) {
+ //    options = { encoding: options, flag: 'r' };
+ //  } else if (!util.isObject(options)) {
+ //    throw new TypeError('Bad arguments');
+ //  }
+
+ //  var encoding = options.encoding,
+ //  	flag = options.flag || 'r';
+ //  assertEncoding(options.encoding);
+
+ //  var fd = fs.openSync(path, flag /*, mode */);
+
+ //  fs.closeSync(fd);
 };
 
 fs.close = function close(fd, callback) {
@@ -64,10 +119,7 @@ fs.open = function open(path, flags, mode, callback) {
 };
 
 fs.openSync = function openSync(path, flags, mode) {
-	var tiMode = MODE_MAP[flags];
-	if (!tiMode) {
-		throw new Error('Unknown file open flag: ' + flags);
-	}
+	var tiMode = assertFlags(flags);
 	return $F.getFile(path).open(tiMode);
 };
 
@@ -164,15 +216,15 @@ fs.stat = function stat(path, callback) {
 };
 
 fs.fstatSync = function fstatSync(fd) {
-	throw new Error('fstatSync not yet implemented');
+	throw new Error('fstatSync not supported');
 };
 
 fs.lstatSync = function lstatSync(path) {
-	throw new Error('lstatSync not yet implemented');
+	return fs.statSync(path);
 };
 
 fs.statSync = function statSync(path) {
-	throw new Error('statSync not yet implemented');
+	return new fs.Stats(path);
 };
 
 fs.readlink = function readlink(path, callback) {
@@ -343,4 +395,18 @@ function maybeCallback(o) {
 	return o && Object.prototype.toString.call(o) === '[object Function]' ? o : function(err) {
 		if (err) { throw err; }
 	};
+}
+
+function assertFlags(flags) {
+	var tiMode = MODE_MAP[flags];
+	if (!tiMode) {
+		throw new Error('Unknown file open flag: ' + flags);
+	}
+	return tiMode;
+}
+
+function assertEncoding(encoding) {
+	if (encoding && !buffer.isEncoding(encoding)) {
+		throw new Error('Unknown encoding: ' + encoding);
+	}
 }
