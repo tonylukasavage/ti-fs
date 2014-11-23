@@ -9,6 +9,10 @@ $ npm install ti-fs
 $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 ```
 
+## caveats
+
+* `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it.
+
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 * Run all linting and tests with [grunt](http://gruntjs.com/getting-started).
