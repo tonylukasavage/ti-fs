@@ -84,7 +84,9 @@ fs.readFileSync = function readFileSync(path, options) {
  //  	flag = options.flag || 'r';
  //  assertEncoding(options.encoding);
 
- //  var fd = fs.openSync(path, flag /*, mode */);
+ //  var fd = fs.openSync(path, flag /*, mode */),
+ //  	size = fs.fstatSync(fd).size;
+
 
  //  fs.closeSync(fd);
 };
@@ -125,17 +127,36 @@ fs.open = function open(path, flags, mode, callback) {
 
 fs.openSync = function openSync(path, flags, mode) {
 	var tiMode = assertFlags(flags),
-		fd = $F.getFile(path).open(tiMode);
+		file = $F.getFile(path),
+		fd = file.open(tiMode);
 	fd.__path = path;
 	return fd;
 };
 
 fs.read = function read(fd, buffer, offset, length, position, callback) {
-	throw new Error('read not yet implemented');
+	// position is not handled in Titanium streams
+	callback = maybeCallback(arguments[arguments.length-1]);
+	if (util.isFunction(position)) { position = undefined; }
+	if (util.isFunction(length)) { length = undefined; }
+	if (util.isFunction(offset)) { offset = undefined; }
+
+	// TODO: This should be Ti.Stream.read(), but it doesn't appear to do
+	// anything when targeting a FileStream, despite the docs.
+	setTimeout(function() {
+		var bytes = null,
+			err = null;
+		try {
+			bytes = fs.readSync(fd, buffer, offset, length, position);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, bytes, buffer);
+	}, 0);
 };
 
 fs.readSync = function readSync(fd, buffer, offset, length, position) {
-	throw new Error('readSync not yet implemented');
+	// position is not handled in Titanium streams
+	return fd.read(buffer, offset, length);
 };
 
 fs.write = function write(fd, buffer, offset, length, position, callback) {
@@ -430,7 +451,7 @@ fs.SyncWriteStream = function SyncWriteStream(fd, options) {
 };
 
 function maybeCallback(o) {
-	return o && Object.prototype.toString.call(o) === '[object Function]' ? o : function(err) {
+	return o && util.isFunction(o) ? o : function(err) {
 		if (err) { throw err; }
 	};
 }

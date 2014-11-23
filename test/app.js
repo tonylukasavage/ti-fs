@@ -3,7 +3,8 @@ var async = require('async'),
 	should = require('should');
 require('ti-mocha');
 
-var FILE = 'file.txt';
+var FILE = 'file.txt',
+	CONTENT = 'I\'m a text file.';
 
 describe('ti-fs', function() {
 
@@ -190,12 +191,38 @@ describe('ti-fs', function() {
 		});
 	});
 
-	it.skip('#read', function() {
-		(function() { fs.read(); }).should.throw(/implemented/);
+	it('#read', function(done) {
+		Ti.API.error('read\n');
+		fs.open('file.txt', 'r', function(err, fd) {
+			Ti.API.error('open\n');
+			should.not.exist(err);
+			fs.fstat(fd, function(err, stats) {
+				Ti.API.error('fstat: ' + stats.size + '\n');
+				should.not.exist(err);
+				var buffer = Ti.createBuffer({ length: stats.size });
+				Ti.API.error('before read\n');
+				fs.read(fd, buffer, function(err, bytes, buffer) {
+					Ti.API.error('after read\n');
+					bytes.should.equal(stats.size);
+					buffer.toString().should.equal(CONTENT);
+					fs.close(fd, function(err) {
+						should.not.exist(err);
+						return done();
+					});
+				});
+			});
+		});
 	});
 
-	it.skip('#readSync', function() {
-		(function() { fs.readSync(); }).should.throw(/implemented/);
+	it('#readSync', function() {
+		var fd = fs.openSync('file.txt', 'r'),
+			stats = fs.fstatSync(fd),
+			buffer = Ti.createBuffer({ length: stats.size });
+		var bytes = fs.readSync(fd, buffer);
+		fs.closeSync(fd);
+
+		bytes.should.equal(stats.size);
+		buffer.toString().should.equal(CONTENT);
 	});
 
 	it.skip('#write', function() {

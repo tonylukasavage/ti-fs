@@ -1,4 +1,4 @@
-# ti-fs ![implemented 27%](http://img.shields.io/badge/implemented-8%-red.svg)
+# ti-fs ![implemented 29%](http://img.shields.io/badge/implemented-8%-red.svg)
 
 node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `console` for use with [browserify][].
 
@@ -9,9 +9,21 @@ $ npm install ti-fs
 $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 ```
 
+## assumptions
+
+In the absence of a node.js implementation of the `buffer` module, the following assumptions are made:
+
+* All `buffer` buffers are assumed to be [Ti.Buffer][] instances.
+* All `fd` file descriptors are assumed to be [Ti.Filesystem.FileStream][] instances.
+
 ## caveats
 
-* `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it.
+* `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it directly, only the file to which it links.
+* Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions:
+	* `read`
+	* `readSync`
+	* `write`
+	* `writeSync`
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
@@ -21,3 +33,5 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 * Anything interface not part of the node.js `fs` module will be rejected.
 
 [browserify]: https://github.com/substack/node-browserify
+[Ti.Buffer]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Buffer
+[Ti.Filesystem.FileStream]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.FileStream
