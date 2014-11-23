@@ -24,7 +24,7 @@ fs.Stats = function Stats(path) {
 	if (path) {
 		this.__file = $F.getFile(path);
 		this.size = this.__file.size;
-		this.mode = 0; // TODO: try to get a basic owner mode based on Ti API
+		this.mode = 0;
 		this.ctime = new Date(this.__file.createTimestamp());
 		this.atime = this.mtime = new Date(this.__file.modificationTimestamp());
 	}
