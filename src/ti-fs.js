@@ -1,6 +1,5 @@
 var $F = Ti.Filesystem,
 	fs = exports,
-	buffer = require('buffer'),
 	util = require('util');
 
 var MODE_MAP = {};
@@ -445,7 +444,7 @@ function assertFlags(flags) {
 }
 
 function assertEncoding(encoding) {
-	if (encoding && !buffer.isEncoding(encoding)) {
+	if (encoding && !Buffer.isEncoding(encoding)) {
 		throw new Error('Unknown encoding: ' + encoding);
 	}
 }

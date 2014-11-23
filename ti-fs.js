@@ -2005,9 +2005,9 @@ function hasOwnProperty(obj, prop) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":7,"_process":6,"inherits":5}],9:[function(require,module,exports){
+(function (Buffer){
 var $F = Ti.Filesystem,
 	fs = exports,
-	buffer = require('buffer'),
 	util = require('util');
 
 var MODE_MAP = {};
@@ -2031,7 +2031,7 @@ fs.Stats = function Stats(path) {
 	if (path) {
 		this.__file = $F.getFile(path);
 		this.size = this.__file.size;
-		this.mode = 0; // TODO: try to get a basic owner mode based on Ti API
+		this.mode = 0;
 		this.ctime = new Date(this.__file.createTimestamp());
 		this.atime = this.mtime = new Date(this.__file.modificationTimestamp());
 	}
@@ -2452,9 +2452,10 @@ function assertFlags(flags) {
 }
 
 function assertEncoding(encoding) {
-	if (encoding && !buffer.isEncoding(encoding)) {
+	if (encoding && !Buffer.isEncoding(encoding)) {
 		throw new Error('Unknown encoding: ' + encoding);
 	}
 }
 
+}).call(this,require("buffer").Buffer)
 },{"buffer":1,"util":8}]},{},[9])(9);
