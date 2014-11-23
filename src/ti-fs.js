@@ -212,15 +212,42 @@ fs.readdirSync = function readdirSync(path) {
 };
 
 fs.fstat = function fstat(fd, callback) {
-	throw new Error('fstat not yet implemented');
+	setTimeout(function() {
+		var stats = null,
+			err = null;
+		try {
+			stats = fs.fstatSync(fd);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, stats);
+	}, 0);
 };
 
 fs.lstat = function lstat(path, callback) {
-	throw new Error('lstat not yet implemented');
+	setTimeout(function() {
+		var stats = null,
+			err = null;
+		try {
+			stats = fs.lstatSync(path);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, stats);
+	}, 0);
 };
 
 fs.stat = function stat(path, callback) {
-	throw new Error('stat not yet implemented');
+	setTimeout(function() {
+		var stats = null,
+			err = null;
+		try {
+			stats = fs.statSync(path);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, stats);
+	}, 0);
 };
 
 fs.fstatSync = function fstatSync(fd) {

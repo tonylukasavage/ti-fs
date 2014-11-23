@@ -270,16 +270,31 @@ describe('ti-fs', function() {
 		(function() { fs.readdirSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#fstat', function() {
-		(function() { fs.fstat(); }).should.throw(/implemented/);
+	it('#fstat', function(done) {
+		fs.open('file.txt', 'r', function(err, fd) {
+			should.not.exist(err);
+			fs.fstat(fd, function(err, stats) {
+				should.not.exist(err);
+				statFileTxt(stats);
+				fs.close(fd, done);
+			});
+		});
 	});
 
-	it.skip('#lstat', function() {
-		(function() { fs.lstat(); }).should.throw(/implemented/);
+	it('#lstat', function(done) {
+		fs.lstat('file.txt', function(err, stats) {
+			should.not.exist(err);
+			statFileTxt(stats);
+			return done();
+		});
 	});
 
-	it.skip('#stat', function() {
-		(function() { fs.stat(); }).should.throw(/implemented/);
+	it('#stat', function(done) {
+		fs.stat('file.txt', function(err, stats) {
+			should.not.exist(err);
+			statFileTxt(stats);
+			return done();
+		});
 	});
 
 	it('#fstatSync', function() {
@@ -294,10 +309,18 @@ describe('ti-fs', function() {
 
 	it('#lstatSync', function() {
 		statFileTxt(fs.lstatSync('file.txt'));
+
+		(function() {
+			fs.lstatSync('iamafakefile.bob');
+		}).should.throw();
 	});
 
 	it('#statSync', function() {
 		statFileTxt(fs.statSync('file.txt'));
+
+		(function() {
+			fs.statSync('iamafakefile.bob');
+		}).should.throw();
 	});
 
 	it.skip('#readlink', function() {
