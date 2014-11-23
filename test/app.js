@@ -14,33 +14,7 @@ describe('ti-fs', function() {
 	});
 
 	it('#Stats contain file attributes', function() {
-		var stats = new fs.Stats('file.txt');
-		stats.__file.apiName.should.equal('Ti.Filesystem.File');
-		stats.dev.should.equal(0);
-		stats.ino.should.equal(0);
-		stats.mode.should.equal(0);
-		stats.nlink.should.equal(0);
-		stats.uid.should.equal(0);
-		stats.gid.should.equal(0);
-		stats.rdev.should.equal(0);
-		stats.blksize.should.equal(4096);
-		stats.blocks.should.equal(8);
-		stats.size.should.equal(16);
-		stats.atime.should.be.a.Date;
-		stats.ctime.should.be.a.Date;
-		stats.mtime.should.be.a.Date;
-		stats.isDirectory().should.be.false;
-		stats.isFile().should.be.true;
-		stats.isBlockDevice().should.be.false;
-		stats.isCharacterDevice().should.be.false;
-		stats.isFIFO().should.be.false;
-		stats.isSocket().should.be.false;
-
-		if (Ti.Platform.name === 'iPhone OS') {
-			stats.isSymbolicLink().should.be.true;
-		} else {
-			stats.isSymbolicLink().should.be.false;
-		}
+		statFileTxt(new fs.Stats('file.txt'));
 	});
 
 	it('#exists', function(done) {
@@ -308,16 +282,22 @@ describe('ti-fs', function() {
 		(function() { fs.stat(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#fstatSync', function() {
-		(function() { fs.fstatSync(); }).should.throw(/implemented/);
+	it('#fstatSync', function() {
+		var fd = fs.openSync('file.txt', 'r');
+		statFileTxt(fs.fstatSync(fd));
+		fs.closeSync(fd);
+
+		(function() {
+			fs.fstatSync(123);
+		}).should.throw(/descriptor/);
 	});
 
-	it.skip('#lstatSync', function() {
-		(function() { fs.lstatSync(); }).should.throw(/implemented/);
+	it('#lstatSync', function() {
+		statFileTxt(fs.lstatSync('file.txt'));
 	});
 
-	it.skip('#statSync', function() {
-		(function() { fs.statSync(); }).should.throw(/implemented/);
+	it('#statSync', function() {
+		statFileTxt(fs.statSync('file.txt'));
 	});
 
 	it.skip('#readlink', function() {
@@ -489,3 +469,32 @@ describe('ti-fs', function() {
 mocha.run(function() {
 	Ti.API.info('[TESTS COMPLETE]');
 });
+
+function statFileTxt(stats) {
+	stats.__file.apiName.should.equal('Ti.Filesystem.File');
+	stats.dev.should.equal(0);
+	stats.ino.should.equal(0);
+	stats.mode.should.equal(0);
+	stats.nlink.should.equal(0);
+	stats.uid.should.equal(0);
+	stats.gid.should.equal(0);
+	stats.rdev.should.equal(0);
+	stats.blksize.should.equal(4096);
+	stats.blocks.should.equal(8);
+	stats.size.should.equal(16);
+	stats.atime.should.be.a.Date;
+	stats.ctime.should.be.a.Date;
+	stats.mtime.should.be.a.Date;
+	stats.isDirectory().should.be.false;
+	stats.isFile().should.be.true;
+	stats.isBlockDevice().should.be.false;
+	stats.isCharacterDevice().should.be.false;
+	stats.isFIFO().should.be.false;
+	stats.isSocket().should.be.false;
+
+	if (Ti.Platform.name === 'iPhone OS') {
+		stats.isSymbolicLink().should.be.true;
+	} else {
+		stats.isSymbolicLink().should.be.false;
+	}
+}

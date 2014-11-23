@@ -125,8 +125,10 @@ fs.open = function open(path, flags, mode, callback) {
 };
 
 fs.openSync = function openSync(path, flags, mode) {
-	var tiMode = assertFlags(flags);
-	return $F.getFile(path).open(tiMode);
+	var tiMode = assertFlags(flags),
+		fd = $F.getFile(path).open(tiMode);
+	fd.__path = path;
+	return fd;
 };
 
 fs.read = function read(fd, buffer, offset, length, position, callback) {
@@ -222,7 +224,11 @@ fs.stat = function stat(path, callback) {
 };
 
 fs.fstatSync = function fstatSync(fd) {
-	throw new Error('fstatSync not supported');
+	if (fd.__path) {
+		return fs.statSync(fd.__path);
+	} else {
+		throw new Error('invalid file descriptor');
+	}
 };
 
 fs.lstatSync = function lstatSync(path) {
