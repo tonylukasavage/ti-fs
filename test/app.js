@@ -192,17 +192,12 @@ describe('ti-fs', function() {
 	});
 
 	it('#read', function(done) {
-		Ti.API.error('read\n');
 		fs.open('file.txt', 'r', function(err, fd) {
-			Ti.API.error('open\n');
 			should.not.exist(err);
 			fs.fstat(fd, function(err, stats) {
-				Ti.API.error('fstat: ' + stats.size + '\n');
 				should.not.exist(err);
 				var buffer = Ti.createBuffer({ length: stats.size });
-				Ti.API.error('before read\n');
 				fs.read(fd, buffer, function(err, bytes, buffer) {
-					Ti.API.error('after read\n');
 					bytes.should.equal(stats.size);
 					buffer.toString().should.equal(CONTENT);
 					fs.close(fd, function(err) {
