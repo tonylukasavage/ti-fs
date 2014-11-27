@@ -1,4 +1,4 @@
-# ti-fs ![implemented 31%](http://img.shields.io/badge/implemented-31%-red.svg)
+# ti-fs ![implemented 58%](http://img.shields.io/badge/implemented-58%-yellow.svg)
 
 node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `fs` for use with [browserify][].
 
@@ -21,18 +21,21 @@ In the absence of a node.js implementation of the `buffer` module, the following
 
 ## caveats
 
+* The following functions are not possible to implement with the Titanium API and are thus no-ops. While native modules might make some of this possible, there's about a 0.1% chance I'll be developing or merging any into this project:
+	* `fsync | fsyncSync`
+	* `link | linkSync`
+	* `symlink | symlinkSync`
+	* `watch | watchFile | unwatchFile`
+	* `chmod | chmodSync | fchmod | fchmodSync | lchmod | lchmodSync`
+	* `chown | chownSync | fchown | fchownSync | lchown | lchownSync`
 * `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it directly, only the file to which it links.
 * Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions:
-	* `read`
-	* `readSync`
-	* `write`
-	* `writeSync`
+	* `read | readSync`
+	* `write | writeSync`
 * The following encodings are not currently supported, though could be if requests are made in the issues:
 	* `hex`
-	* `ucs2`
-	* `ucs-2`
-	* `utf16le`
-	* `utf-16le`
+	* `ucs2 | ucs-2`
+	* `utf16le | utf-16le`
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
