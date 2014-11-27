@@ -939,22 +939,6 @@ fs.rmdirSync = function rmdirSync(path) {
 	throw new Error('rmdirSync not yet implemented');
 };
 
-fs.fdatasync = function fdatasync(fd, callback) {
-	throw new Error('fdatasync not yet implemented');
-};
-
-fs.fdatasyncSync = function fdatasyncSync(fd) {
-	throw new Error('fdatasyncSync not yet implemented');
-};
-
-fs.fsync = function fsync(fd, callback) {
-	throw new Error('fsync not yet implemented');
-};
-
-fs.fsyncSync = function fsyncSync(fd) {
-	throw new Error('fsyncSync not yet implemented');
-};
-
 fs.mkdir = function mkdir(path, mode, callback) {
 	throw new Error('mkdir not yet implemented');
 };
@@ -1034,80 +1018,12 @@ fs.readlinkSync = function readlinkSync(path) {
 	throw new Error('readlinkSync not yet implemented');
 };
 
-fs.symlink = function symlink(destination, path, type_, callback) {
-	throw new Error('symlink not yet implemented');
-};
-
-fs.symlinkSync = function symlinkSync(destination, path, type) {
-	throw new Error('symlinkSync not yet implemented');
-};
-
-fs.link = function link(srcpath, dstpath, callback) {
-	throw new Error('link not yet implemented');
-};
-
-fs.linkSync = function linkSync(srcpath, dstpath) {
-	throw new Error('linkSync not yet implemented');
-};
-
 fs.unlink = function unlink(path, callback) {
 	throw new Error('unlink not yet implemented');
 };
 
 fs.unlinkSync = function unlinkSync(path) {
 	throw new Error('unlinkSync not yet implemented');
-};
-
-fs.fchmod = function fchmod(fd, mode, callback) {
-	throw new Error('fchmod not yet implemented');
-};
-
-fs.fchmodSync = function fchmodSync(fd, mode) {
-	throw new Error('fchmodSync not yet implemented');
-};
-
-fs.lchmod = function lchmod(path, mode, callback) {
-	throw new Error('lchmod not yet implemented');
-};
-
-fs.lchmodSync = function lchmodSync(path, mode) {
-	throw new Error('lchmodSync not yet implemented');
-};
-
-fs.chmod = function chmod(path, mode, callback) {
-	throw new Error('chmod not yet implemented');
-};
-
-fs.chmodSync = function chmodSync(path, mode) {
-	throw new Error('chmodSync not yet implemented');
-};
-
-fs.lchown = function lchown(path, uid, gid, callback) {
-	throw new Error('lchown not yet implemented');
-};
-
-fs.lchownSync = function lchownSync(path, uid, gid) {
-	throw new Error('lchownSync not yet implemented');
-};
-
-fs.fchown = function fchown(fd, uid, gid, callback) {
-	throw new Error('fchown not yet implemented');
-};
-
-fs.fchownSync = function fchownSync(fd, uid, gid) {
-	throw new Error('fchownSync not yet implemented');
-};
-
-fs.chown = function chown(path, uid, gid, callback) {
-	throw new Error('chown not yet implemented');
-};
-
-fs.chownSync = function chownSync(path, uid, gid) {
-	throw new Error('chownSync not yet implemented');
-};
-
-fs._toUnixTimestamp = function _toUnixTimestamp(time) {
-	throw new Error('_toUnixTimestamp not yet implemented');
 };
 
 fs.utimes = function utimes(path, atime, mtime, callback) {
@@ -1140,18 +1056,6 @@ fs.appendFile = function appendFile(path, data, options, callback_) {
 
 fs.appendFileSync = function appendFileSync(path, data, options) {
 	throw new Error('appendFileSync not yet implemented');
-};
-
-fs.watch = function watch(filename) {
-	throw new Error('watch not yet implemented');
-};
-
-fs.watchFile = function watchFile(filename) {
-	throw new Error('watchFile not yet implemented');
-};
-
-fs.unwatchFile = function unwatchFile(filename, listener) {
-	throw new Error('unwatchFile not yet implemented');
 };
 
 fs.realpathSync = function realpathSync(p, cache) {
@@ -1190,6 +1094,34 @@ fs.SyncWriteStream = function SyncWriteStream(fd, options) {
 	throw new Error('SyncWriteStream not yet implemented');
 };
 
+// no-ops
+fs.fdatasync = function fdatasync(fd, callback) { return callback(); };
+fs.fdatasyncSync = function fdatasyncSync(fd) {};
+fs.fsync = function fsync(fd, callback) { return callback(); };
+fs.fsyncSync = function fsyncSync(fd) {};
+fs.fchmod = function fchmod(fd, mode, callback) { return callback(); };
+fs.fchmodSync = function fchmodSync(fd, mode) {};
+fs.lchmod = function lchmod(path, mode, callback) { return callback(); };
+fs.lchmodSync = function lchmodSync(path, mode) {};
+fs.chmod = function chmod(path, mode, callback) { return callback(); };
+fs.chmodSync = function chmodSync(path, mode) {};
+fs.lchown = function lchown(path, uid, gid, callback) { return callback(); };
+fs.lchownSync = function lchownSync(path, uid, gid) {};
+fs.fchown = function fchown(fd, uid, gid, callback) { return callback(); };
+fs.fchownSync = function fchownSync(fd, uid, gid) {};
+fs.chown = function chown(path, uid, gid, callback) { return callback(); };
+fs.chownSync = function chownSync(path, uid, gid) {};
+fs.symlink = function symlink(destination, path, type_, callback) {
+	return maybeCallback(arguments[arguments.length-1])();
+};
+fs.symlinkSync = function symlinkSync(destination, path, type) {};
+fs.link = function link(srcpath, dstpath, callback) { return callback(); };
+fs.linkSync = function linkSync(srcpath, dstpath) {};
+fs.watch = function watch(filename) {};
+fs.watchFile = function watchFile(filename) {};
+fs.unwatchFile = function unwatchFile(filename, listener) {};
+
+// helpers
 function maybeCallback(o) {
 	return o && util.isFunction(o) ? o : function(err) {
 		if (err) { throw err; }
