@@ -28,11 +28,11 @@ In the absence of a node.js implementation of the `buffer` module, the following
 	* `write`
 	* `writeSync`
 * The following encodings are not currently supported, though could be if requests are made in the issues:
-	* hex
-	* ucs2
-	* ucs-2
-	* utf16le
-	* utf-16le
+	* `hex`
+	* `ucs2`
+	* `ucs-2`
+	* `utf16le`
+	* `utf-16le`
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
