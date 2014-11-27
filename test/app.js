@@ -280,20 +280,17 @@ describe('ti-fs', function() {
 		(function() { fs.rmdirSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#fdatasync', function() {
-		(function() { fs.fdatasync(); }).should.throw(/implemented/);
+	it('#fsync', function(done) {
+		fs.fsync(null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#fdatasyncSync', function() {
-		(function() { fs.fdatasyncSync(); }).should.throw(/implemented/);
-	});
-
-	it.skip('#fsync', function() {
-		(function() { fs.fsync(); }).should.throw(/implemented/);
-	});
-
-	it.skip('#fsyncSync', function() {
-		(function() { fs.fsyncSync(); }).should.throw(/implemented/);
+	it('#fsyncSync', function() {
+		(function() {
+			should.not.exist(fs.fsyncSync());
+		}).should.not.throw();
 	});
 
 	it.skip('#mkdir', function() {
@@ -373,20 +370,30 @@ describe('ti-fs', function() {
 		(function() { fs.readlinkSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#symlink', function() {
-		(function() { fs.symlink(); }).should.throw(/implemented/);
+	it('#symlink', function(done) {
+		fs.symlink(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#symlinkSync', function() {
-		(function() { fs.symlinkSync(); }).should.throw(/implemented/);
+	it('#symlinkSync', function() {
+		(function() {
+			should.not.exist(fs.symlinkSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#link', function() {
-		(function() { fs.link(); }).should.throw(/implemented/);
+	it('#link', function(done) {
+		fs.link(null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#linkSync', function() {
-		(function() { fs.linkSync(); }).should.throw(/implemented/);
+	it('#linkSync', function() {
+		(function() {
+			should.not.exist(fs.linkSync());
+		}).should.not.throw();
 	});
 
 	it.skip('#unlink', function() {
@@ -397,56 +404,82 @@ describe('ti-fs', function() {
 		(function() { fs.unlinkSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#fchmod', function() {
-		(function() { fs.fchmod(); }).should.throw(/implemented/);
+	it('#fchmod', function(done) {
+		fs.fchmod(null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#fchmodSync', function() {
-		(function() { fs.fchmodSync(); }).should.throw(/implemented/);
+	it('#fchmodSync', function() {
+		(function() {
+			should.not.exist(fs.fchmodSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#lchmod', function() {
-		(function() { fs.lchmod(); }).should.throw(/implemented/);
+	it('#lchmod', function(done) {
+		fs.lchmod(null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#lchmodSync', function() {
-		(function() { fs.lchmodSync(); }).should.throw(/implemented/);
+	it('#lchmodSync', function() {
+		(function() {
+			should.not.exist(fs.lchmodSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#chmod', function() {
-		(function() { fs.chmod(); }).should.throw(/implemented/);
+	it('#chmod', function(done) {
+		fs.chmod(null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#chmodSync', function() {
-		(function() { fs.chmodSync(); }).should.throw(/implemented/);
+	it('#chmodSync', function() {
+		(function() {
+			should.not.exist(fs.chmodSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#lchown', function() {
-		(function() { fs.lchown(); }).should.throw(/implemented/);
+	it('#lchown', function(done) {
+		fs.lchown(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#lchownSync', function() {
-		(function() { fs.lchownSync(); }).should.throw(/implemented/);
+	it('#lchownSync', function() {
+		(function() {
+			should.not.exist(fs.lchownSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#fchown', function() {
-		(function() { fs.fchown(); }).should.throw(/implemented/);
+	it('#fchown', function(done) {
+		fs.fchown(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#fchownSync', function() {
-		(function() { fs.fchownSync(); }).should.throw(/implemented/);
+	it('#fchownSync', function() {
+		(function() {
+			should.not.exist(fs.fchownSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#chown', function() {
-		(function() { fs.chown(); }).should.throw(/implemented/);
+	it('#chown', function(done) {
+		fs.chown(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#chownSync', function() {
-		(function() { fs.chownSync(); }).should.throw(/implemented/);
-	});
-
-	it.skip('#_toUnixTimestamp', function() {
-		(function() { fs._toUnixTimestamp(); }).should.throw(/implemented/);
+	it('#chownSync', function() {
+		(function() {
+			should.not.exist(fs.chownSync());
+		}).should.not.throw();
 	});
 
 	it.skip('#utimes', function() {
@@ -481,16 +514,22 @@ describe('ti-fs', function() {
 		(function() { fs.appendFileSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#watch', function() {
-		(function() { fs.watch(); }).should.throw(/implemented/);
+	it('#watch', function() {
+		(function() {
+			should.not.exist(fs.watch());
+		}).should.not.throw();
 	});
 
-	it.skip('#watchFile', function() {
-		(function() { fs.watchFile(); }).should.throw(/implemented/);
+	it('#watchFile', function() {
+		(function() {
+			should.not.exist(fs.watchFile());
+		}).should.not.throw();
 	});
 
-	it.skip('#unwatchFile', function() {
-		(function() { fs.unwatchFile(); }).should.throw(/implemented/);
+	it('#unwatchFile', function() {
+		(function() {
+			should.not.exist(fs.unwatchFile());
+		}).should.not.throw();
 	});
 
 	it.skip('#realpathSync', function() {
