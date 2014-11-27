@@ -464,8 +464,34 @@ function assertFlags(flags) {
 	return tiMode;
 }
 
+var ENCODINGS = ['ascii','utf8','utf-8','base64','binary','blob'];
 function assertEncoding(encoding) {
-	if (encoding && !Buffer.isEncoding(encoding)) {
+	if (encoding && ENCODINGS.indexOf(encoding.toLowerCase()) === -1) {
 		throw new Error('Unknown encoding: ' + encoding);
+	}
+}
+
+function convertBuffer(buffer, encoding) {
+	switch(encoding.toLowerCase()) {
+		case 'ascii':
+		case 'binary':
+			var ret = '';
+			for (var i = 0; i < buffer.length; i++) {
+				ret += String.fromCharCode(Ti.Codec.decodeNumber({
+					source: buffer,
+					type: Ti.Codec.TYPE_BYTE,
+					position: i
+				}));
+			}
+			return ret;
+		case 'utf8':
+		case 'utf-8':
+			return buffer.toString();
+		case 'base64':
+			return Ti.Utils.base64encode(buffer.toString()).toString();
+		case 'blob':
+			return buffer.toBlob();
+		default:
+			throw new Error('Unknown encoding: ' + encoding);
 	}
 }
