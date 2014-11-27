@@ -2,7 +2,9 @@
 
 node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `fs` for use with [browserify][].
 
-## install
+## install [![npm version](https://badge.fury.io/js/ti-fs.svg)](http://badge.fury.io/js/ti-fs)
+
+> **NOT YET FUNCTIONAL**
 
 ```bash
 $ npm install ti-fs
