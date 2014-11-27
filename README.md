@@ -15,6 +15,7 @@ In the absence of a node.js implementation of the `buffer` module, the following
 
 * All `buffer` buffers are assumed to be [Ti.Buffer][] instances.
 * All `fd` file descriptors are assumed to be [Ti.Filesystem.FileStream][] instances.
+* The encoding types `binary` and `blob` return [Ti.Blob][] instances.
 
 ## caveats
 
@@ -24,6 +25,12 @@ In the absence of a node.js implementation of the `buffer` module, the following
 	* `readSync`
 	* `write`
 	* `writeSync`
+* The following encodings are not currently supported, though could be if requests are made in the issues:
+	* hex
+	* ucs2
+	* ucs-2
+	* utf16le
+	* utf-16le
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
@@ -33,5 +40,6 @@ In the absence of a node.js implementation of the `buffer` module, the following
 * Anything interface not part of the node.js `fs` module will be rejected.
 
 [browserify]: https://github.com/substack/node-browserify
+[Ti.Blob]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Blob
 [Ti.Buffer]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Buffer
 [Ti.Filesystem.FileStream]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.FileStream
