@@ -41,12 +41,32 @@ describe('ti-fs', function() {
 		fs.existsSync('another/bad/file').should.be.false;
 	});
 
-	it.skip('#readFile', function() {
-		(function() { fs.readFile(); }).should.throw(/implemented/);
+	it('#readFile', function(done) {
+		async.series([
+			function(callback) {
+				fs.readFile('file.txt', 'utf8', function(err, data) {
+					should.not.exist(err);
+					data.should.equal(CONTENT);
+					callback();
+				});
+			},
+			function(callback) {
+				fs.readFile('file.txt', function(err, data) {
+					should.not.exist(err);
+					data.apiName.should.equal('Ti.Buffer');
+					data.toString().should.equal(CONTENT);
+					callback();
+				});
+			}
+		], done);
 	});
 
-	it.skip('#readFileSync', function() {
-		(function() { fs.readFileSync(); }).should.throw(/implemented/);
+	it('#readFileSync', function() {
+		fs.readFileSync('file.txt', 'utf8').should.equal(CONTENT);
+
+		var buffer = fs.readFileSync('file.txt');
+		buffer.apiName.should.equal('Ti.Buffer');
+		buffer.toString().should.equal(CONTENT);
 	});
 
 	describe('#close', function() {

@@ -68,27 +68,56 @@ fs.existsSync = function existsSync(path) {
 };
 
 fs.readFile = function readFile(path, options, callback_) {
-	throw new Error('readFile not yet implemented');
+	var callback = maybeCallback(arguments[arguments.length-1]);
+	if (!options || util.isFunction(options)) {
+    options = { encoding: null, flag: 'r' };
+  } else if (util.isString(options)) {
+    options = { encoding: options, flag: 'r' };
+  } else if (!util.isObject(options)) {
+    throw new TypeError('Bad arguments');
+  }
+
+  var encoding = options.encoding,
+  	flag = options.flag || 'r';
+  assertEncoding(options.encoding);
+
+  fs.open(path, flag, function(err, fd) {
+  	if (err) { return callback(err); }
+  	fs.fstat(fd, function(err, stats) {
+  		if (err) { return callback(err); }
+  		var buffer = Ti.createBuffer({length:stats.size});
+  		fs.read(fd, buffer, function(err, data) {
+  			if (err) { return callback(err); }
+  			fs.close(fd, function(err) {
+  				if (err) { return callback(err); }
+  				return callback(err, encoding ? convertBuffer(buffer, encoding) : buffer);
+  			});
+  		});
+  	});
+  });
 };
 
 fs.readFileSync = function readFileSync(path, options) {
-	// if (!options) {
- //    options = { encoding: null, flag: 'r' };
- //  } else if (util.isString(options)) {
- //    options = { encoding: options, flag: 'r' };
- //  } else if (!util.isObject(options)) {
- //    throw new TypeError('Bad arguments');
- //  }
+	if (!options) {
+    options = { encoding: null, flag: 'r' };
+  } else if (util.isString(options)) {
+    options = { encoding: options, flag: 'r' };
+  } else if (!util.isObject(options)) {
+    throw new TypeError('Bad arguments');
+  }
 
- //  var encoding = options.encoding,
- //  	flag = options.flag || 'r';
- //  assertEncoding(options.encoding);
+  var encoding = options.encoding,
+  	flag = options.flag || 'r';
+  assertEncoding(options.encoding);
 
- //  var fd = fs.openSync(path, flag /*, mode */),
- //  	size = fs.fstatSync(fd).size;
+  var fd = fs.openSync(path, flag /*, mode */),
+  	size = fs.fstatSync(fd).size,
+  	buffer = Ti.createBuffer({length:size});
 
+  fs.readSync(fd, buffer);
+  fs.closeSync(fd);
 
- //  fs.closeSync(fd);
+  return encoding ? convertBuffer(buffer, encoding) : buffer;
 };
 
 fs.close = function close(fd, callback) {
