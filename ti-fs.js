@@ -1095,8 +1095,6 @@ fs.SyncWriteStream = function SyncWriteStream(fd, options) {
 };
 
 // no-ops
-fs.fdatasync = function fdatasync(fd, callback) { return callback(); };
-fs.fdatasyncSync = function fdatasyncSync(fd) {};
 fs.fsync = function fsync(fd, callback) { return callback(); };
 fs.fsyncSync = function fsyncSync(fd) {};
 fs.fchmod = function fchmod(fd, mode, callback) { return callback(); };
