@@ -232,20 +232,49 @@ describe('ti-fs', function() {
 	it('#readSync', function() {
 		var fd = fs.openSync('file.txt', 'r'),
 			stats = fs.fstatSync(fd),
-			buffer = Ti.createBuffer({ length: stats.size });
-		var bytes = fs.readSync(fd, buffer);
+			buffer = Ti.createBuffer({ length: stats.size }),
+			bytes = fs.readSync(fd, buffer);
 		fs.closeSync(fd);
-
 		bytes.should.equal(stats.size);
 		buffer.toString().should.equal(CONTENT);
 	});
 
-	it.skip('#write', function() {
-		(function() { fs.write(); }).should.throw(/implemented/);
+	it('#write', function(done) {
+		var test = 'WRITETEST';
+		var file = Ti.Filesystem.getFile('write.txt');
+		file.createFile().should.be.true;
+
+		var fd = fs.openSync('write.txt', 'w');
+		fs.write(fd, Ti.createBuffer({value:test}), function(err, bytes, buffer) {
+			should.not.exist(err);
+			bytes.should.equal(test.length);
+			fs.readFileSync('write.txt', 'utf8').should.equal(test);
+
+			fs.write(fd, Ti.createBuffer({value:'foo'}), 1, 2, function(err, bytes, buffer) {
+				should.not.exist(err);
+				bytes.should.equal(2);
+				fs.readFileSync('write.txt', 'utf8').should.equal('WRITETESToo');
+				fs.closeSync(fd);
+				return done();
+			});
+		});
 	});
 
-	it.skip('#writeSync', function() {
-		(function() { fs.writeSync(); }).should.throw(/implemented/);
+	it('#writeSync', function() {
+		var test = 'WRITETEST';
+		var file = Ti.Filesystem.getFile('writeSync.txt');
+		file.createFile().should.be.true;
+
+		var fd = fs.openSync('writeSync.txt', 'w');
+		var bytes = fs.writeSync(fd, Ti.createBuffer({value:test}));
+		bytes.should.equal(test.length);
+		fs.readFileSync('writeSync.txt', 'utf8').should.equal(test);
+
+		bytes = fs.writeSync(fd, Ti.createBuffer({value:'foo'}), 1, 2);
+		bytes.should.equal(2);
+		fs.readFileSync('writeSync.txt', 'utf8').should.equal('WRITETESToo');
+
+		fs.closeSync(fd);
 	});
 
 	it.skip('#rename', function() {

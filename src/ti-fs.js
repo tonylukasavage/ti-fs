@@ -189,11 +189,29 @@ fs.readSync = function readSync(fd, buffer, offset, length, position) {
 };
 
 fs.write = function write(fd, buffer, offset, length, position, callback) {
-	throw new Error('write not yet implemented');
+	// position is not handled in Titanium streams
+	callback = maybeCallback(arguments[arguments.length-1]);
+	if (util.isFunction(position)) { position = undefined; }
+	if (util.isFunction(length)) { length = undefined; }
+	if (util.isFunction(offset)) { offset = undefined; }
+
+	// TODO: This should be Ti.Stream.write(), but it doesn't appear to do
+	// anything when targeting a FileStream, despite the docs.
+	setTimeout(function() {
+		var bytes = null,
+			err = null;
+		try {
+			bytes = fs.writeSync(fd, buffer, offset, length, position);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, bytes, buffer);
+	}, 0);
 };
 
 fs.writeSync = function writeSync(fd, buffer, offset, length, position) {
-	throw new Error('writeSync not yet implemented');
+	// position is not handled in Titanium streams
+	return fd.write(buffer, offset, length);
 };
 
 fs.rename = function rename(oldPath, newPath, callback) {
