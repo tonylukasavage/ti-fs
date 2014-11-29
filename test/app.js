@@ -277,12 +277,29 @@ describe('ti-fs', function() {
 		fs.closeSync(fd);
 	});
 
-	it.skip('#rename', function() {
-		(function() { fs.rename(); }).should.throw(/implemented/);
+	it('#rename', function(done) {
+		var file = Ti.Filesystem.getFile('rename.foo');
+		file.createFile();
+
+		fs.rename('rename.foo', 'rename.bar', function(err) {
+			should.not.exist(err);
+			var newFile = Ti.Filesystem.getFile('rename.bar');
+			newFile.exists().should.be.true;
+			file.exists().should.be.false;
+			return done();
+		});
 	});
 
-	it.skip('#renameSync', function() {
-		(function() { fs.renameSync(); }).should.throw(/implemented/);
+	it('#renameSync', function() {
+		var file = Ti.Filesystem.getFile('renameSync.foo');
+		file.createFile();
+
+		(function() {
+			fs.renameSync('renameSync.foo', 'renameSync.bar');
+		}).should.not.throw();
+		var newFile = Ti.Filesystem.getFile('renameSync.bar');
+		newFile.exists().should.be.true;
+		file.exists().should.be.false;
 	});
 
 	it.skip('#truncate', function() {

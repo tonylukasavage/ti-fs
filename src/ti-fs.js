@@ -215,11 +215,24 @@ fs.writeSync = function writeSync(fd, buffer, offset, length, position) {
 };
 
 fs.rename = function rename(oldPath, newPath, callback) {
-	throw new Error('rename not yet implemented');
+	setTimeout(function() {
+		var err = null,
+			good = false;
+		try {
+			good = $F.getFile(oldPath).move(newPath);
+			console.log('good: ' + good);
+			if (!good) {
+				err = new Error('could not move file');
+			}
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.renameSync = function renameSync(oldPath, newPath) {
-	throw new Error('renameSync not yet implemented');
+	$F.getFile(oldPath).move(newPath);
 };
 
 fs.truncate = function truncate(path, len, callback) {
