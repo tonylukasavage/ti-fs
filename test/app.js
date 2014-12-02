@@ -544,12 +544,34 @@ describe('ti-fs', function() {
 		(function() { fs.futimesSync(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#writeFile', function() {
-		(function() { fs.writeFile(); }).should.throw(/implemented/);
+	it('#writeFile', function(done) {
+		fs.writeFile('writeFile.txt', 'test\nfoo', function(err) {
+			should.not.exist(err);
+			var file = Ti.Filesystem.getFile('writeFile.txt');
+			file.exists().should.be.true;
+			fs.readFileSync('writeFile.txt', 'utf8').should.equal('test\nfoo');
+
+			fs.writeFile('writeFile2.txt', Ti.createBuffer({value:'blarg'}), function(err) {
+				should.not.exist(err);
+				file = Ti.Filesystem.getFile('writeFile2.txt');
+				file.exists().should.be.true;
+				fs.readFileSync('writeFile2.txt', 'utf8').should.equal('blarg');
+
+				return done();
+			});
+		});
 	});
 
-	it.skip('#writeFileSync', function() {
-		(function() { fs.writeFileSync(); }).should.throw(/implemented/);
+	it('#writeFileSync', function() {
+		fs.writeFileSync('writeFileSync.txt', 'test\nfoo');
+		var file = Ti.Filesystem.getFile('writeFileSync.txt');
+		file.exists().should.be.true;
+		fs.readFileSync('writeFileSync.txt', 'utf8').should.equal('test\nfoo');
+
+		fs.writeFileSync('writeFileSync2.txt', Ti.createBuffer({value:'blarg'}));
+		file = Ti.Filesystem.getFile('writeFileSync2.txt');
+		file.exists().should.be.true;
+		fs.readFileSync('writeFileSync2.txt', 'utf8').should.equal('blarg');
 	});
 
 	it.skip('#appendFile', function() {

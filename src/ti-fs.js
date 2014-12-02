@@ -240,7 +240,11 @@ fs.truncate = function truncate(path, len, callback) {
 };
 
 fs.truncateSync = function truncateSync(path, len) {
-	throw new Error('truncateSync not yet implemented');
+	// var fd = fs.openSync(path, 'r'),
+	// 	buffer = Ti.createBuffer({length:len}),
+	// 	bytes = fs.readSync(fd, buffer);
+	// fs.closeSync(fd);
+	// fs.writeFileSync(path, buffer, {encoding:});
 };
 
 fs.ftruncate = function ftruncate(fd, len, callback) {
@@ -363,11 +367,35 @@ fs.futimesSync = function futimesSync(fd, atime, mtime) {
 };
 
 fs.writeFile = function writeFile(path, data, options, callback) {
-	throw new Error('writeFile not yet implemented');
+	callback = maybeCallback(arguments[arguments.length-1]);
+	if (!options || util.isFunction(options)) {
+		options = {};
+	}
+
+	setTimeout(function() {
+		var err = null;
+		try {
+			fs.writeFileSync(path, data, options);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.writeFileSync = function writeFileSync(path, data, options) {
-	throw new Error('writeFileSync not yet implemented');
+	options = options || {};
+	var encoding = options.encoding || 'utf8',
+		fd = fs.openSync(path, 'w'),
+		buffer;
+
+	if (data.apiName === 'Ti.Buffer') {
+		buffer = data;
+	} else {
+		buffer = Ti.createBuffer({value:data});
+	}
+	fs.writeSync(fd, buffer);
+	fs.closeSync(fd);
 };
 
 fs.appendFile = function appendFile(path, data, options, callback_) {
