@@ -302,20 +302,54 @@ describe('ti-fs', function() {
 		file.exists().should.be.false;
 	});
 
-	it.skip('#truncate', function() {
-		(function() { fs.truncate(); }).should.throw(/implemented/);
+	it('#truncate', function(done) {
+		fs.writeFileSync('truncate.txt', '1234567890');
+		fs.readFileSync('truncate.txt', 'utf8').should.equal('1234567890');
+		fs.truncate('truncate.txt', 4, function(err) {
+			should.not.exist(err);
+			fs.readFileSync('truncate.txt', 'utf8').should.equal('1234');
+			fs.truncate('truncate.txt', function(err) {
+				should.not.exist(err);
+				fs.readFileSync('truncate.txt', 'utf8').should.equal('');
+				return done();
+			});
+		});
 	});
 
-	it.skip('#truncateSync', function() {
-		(function() { fs.truncateSync(); }).should.throw(/implemented/);
+	it('#truncateSync', function() {
+		fs.writeFileSync('truncateSync.txt', '1234567890');
+		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('1234567890');
+		fs.truncateSync('truncateSync.txt', 4);
+		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('1234');
+		fs.truncateSync('truncateSync.txt');
+		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('');
 	});
 
-	it.skip('#ftruncate', function() {
-		(function() { fs.ftruncate(); }).should.throw(/implemented/);
+	it('#ftruncate', function(done) {
+		fs.writeFileSync('ftruncate.txt', '1234567890');
+		fs.readFileSync('ftruncate.txt', 'utf8').should.equal('1234567890');
+		var fd = fs.openSync('ftruncate.txt', 'r');
+		fs.ftruncate(fd, 4, function(err) {
+			should.not.exist(err);
+			fs.readFileSync('ftruncate.txt', 'utf8').should.equal('1234');
+			fs.ftruncate(fd, function(err) {
+				should.not.exist(err);
+				fs.readFileSync('ftruncate.txt', 'utf8').should.equal('');
+				fs.closeSync(fd);
+				return done();
+			});
+		});
 	});
 
-	it.skip('#ftruncateSync', function() {
-		(function() { fs.ftruncateSync(); }).should.throw(/implemented/);
+	it('#ftruncateSync', function() {
+		fs.writeFileSync('ftruncateSync.txt', '1234567890');
+		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('1234567890');
+		var fd = fs.openSync('ftruncateSync.txt', 'r');
+		fs.ftruncateSync(fd, 4);
+		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('1234');
+		fs.ftruncateSync(fd);
+		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('');
+		fs.closeSync(fd);
 	});
 
 	it.skip('#rmdir', function() {
