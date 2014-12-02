@@ -947,24 +947,83 @@ fs.renameSync = function renameSync(oldPath, newPath) {
 };
 
 fs.truncate = function truncate(path, len, callback) {
-	throw new Error('truncate not yet implemented');
+	callback = maybeCallback(arguments[arguments.length-1]);
+	if (!len || util.isFunction(len)) {
+		len = 0;
+	}
+
+	if (len) {
+		fs.open(path, 'r', function(err, fd) {
+			if (err) { return callback(err); }
+			var buffer = Ti.createBuffer({length:len});
+			fs.read(fd, buffer, 0, len, function(err, bytes, buffer) {
+				if (err) { return callback(err); }
+				fs.close(fd, function(err) {
+					if (err) { return callback(err); }
+					fs.writeFile(path, buffer, callback);
+				});
+			});
+		});
+	} else {
+		fs.writeFile(path, '', callback);
+	}
 };
 
 fs.truncateSync = function truncateSync(path, len) {
-	// var fd = fs.openSync(path, 'r'),
-	// 	buffer = Ti.createBuffer({length:len}),
-	// 	bytes = fs.readSync(fd, buffer);
-	// fs.closeSync(fd);
-	// fs.writeFileSync(path, buffer, {encoding:});
-
+	len = len || 0;
+	if (len) {
+		var fd = fs.openSync(path, 'r'),
+			buffer = Ti.createBuffer({length:len});
+		fs.readSync(fd, buffer, 0, len);
+		fs.closeSync(fd);
+		fs.writeFileSync(path, buffer);
+	} else {
+		fs.writeFileSync(path, '');
+	}
 };
 
 fs.ftruncate = function ftruncate(fd, len, callback) {
-	throw new Error('ftruncate not yet implemented');
+	if (!fd.__path) {
+		throw new Error('invalid file descriptor');
+	}
+
+	callback = maybeCallback(arguments[arguments.length-1]);
+	if (!len || util.isFunction(len)) {
+		len = 0;
+	}
+
+	if (len) {
+		var buffer = Ti.createBuffer({length:len});
+		fs.open(fd.__path, 'r', function(err, fd2) {
+			if (err) { return callback(err); }
+			fs.read(fd2, buffer, 0, len, function(err, bytes, buffer) {
+				if (err) { return callback(err); }
+				fs.close(fd2, function(err) {
+					if (err) { return callback(err); }
+					fs.writeFile(fd.__path, buffer, callback);
+				});
+			});
+		});
+	} else {
+		fs.writeFile(fd.__path, '', callback);
+	}
 };
 
 fs.ftruncateSync = function ftruncateSync(fd, len) {
-	throw new Error('ftruncateSync not yet implemented');
+	len = len || 0;
+	if (!fd.__path) {
+		throw new Error('invalid file descriptor');
+	}
+
+	if (len) {
+		var buffer = Ti.createBuffer({length:len}),
+			fd2 = fs.openSync(fd.__path, 'r');
+		fs.readSync(fd2, buffer, 0, len);
+		fs.closeSync(fd2);
+		fs.writeFileSync(fd.__path, buffer);
+	} else {
+		fs.writeFileSync(fd.__path, '');
+	}
 };
 
 fs.rmdir = function rmdir(path, callback) {
