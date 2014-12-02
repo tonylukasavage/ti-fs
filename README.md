@@ -13,7 +13,7 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ## assumptions
 
-In the absence of a node.js implementation of the `buffer` module, the following assumptions are made:
+In the absence of a Titanium implementation of the node.js `buffer` module, the following assumptions are made:
 
 * All `buffer` buffers are assumed to be [Ti.Buffer][] instances.
 * All `fd` file descriptors are assumed to be [Ti.Filesystem.FileStream][] instances.
