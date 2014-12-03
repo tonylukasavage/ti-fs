@@ -352,12 +352,30 @@ describe('ti-fs', function() {
 		fs.closeSync(fd);
 	});
 
-	it.skip('#rmdir', function() {
-		(function() { fs.rmdir(); }).should.throw(/implemented/);
+	it('#rmdir', function(done) {
+		Ti.Filesystem.getFile('rmdir').createDirectory().should.be.true;
+		fs.rmdir('rmdir', function(err) {
+			should.not.exist(err);
+			Ti.Filesystem.getFile('rmdirSync').exists().should.be.false;
+
+			fs.rmdir('idontexist', function(err) {
+				should.exist(err);
+				err.should.match(/directory/);
+				return done();
+			});
+		});
 	});
 
-	it.skip('#rmdirSync', function() {
-		(function() { fs.rmdirSync(); }).should.throw(/implemented/);
+	it('#rmdirSync', function() {
+		Ti.Filesystem.getFile('rmdirSync').createDirectory().should.be.true;
+		(function() {
+			fs.rmdirSync('rmdirSync');
+		}).should.not.throw();
+		Ti.Filesystem.getFile('rmdirSync').exists().should.be.false;
+
+		(function() {
+			fs.rmdirSync('idontexist');
+		}).should.throw(/directory/);
 	});
 
 	it('#fsync', function(done) {
