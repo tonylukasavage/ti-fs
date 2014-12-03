@@ -1047,11 +1047,24 @@ fs.rmdirSync = function rmdirSync(path) {
 };
 
 fs.mkdir = function mkdir(path, mode, callback) {
-	throw new Error('mkdir not yet implemented');
+	callback = maybeCallback(arguments[arguments.length-1]);
+	setTimeout(function() {
+		var err = null;
+		try {
+			if (!$F.getFile(path).createDirectory()) {
+				err = new Error('could not create directory');
+			}
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.mkdirSync = function mkdirSync(path, mode) {
-	throw new Error('mkdirSync not yet implemented');
+	if (!$F.getFile(path).createDirectory()) {
+		throw new Error('could not create directory');
+	}
 };
 
 fs.readdir = function readdir(path, callback) {
