@@ -391,12 +391,30 @@ describe('ti-fs', function() {
 		}).should.not.throw();
 	});
 
-	it.skip('#mkdir', function() {
-		(function() { fs.mkdir(); }).should.throw(/implemented/);
+	it('#mkdir', function(done) {
+		fs.mkdir('mkdir', function(err) {
+			should.not.exist(err);
+			fs.existsSync('mkdir').should.be.true;
+			fs.statSync('mkdir').isDirectory().should.be.true;
+
+			fs.mkdir('i/cant/create/this', function(err) {
+				should.exist(err);
+				err.should.match(/create/);
+				return done();
+			});
+		});
 	});
 
-	it.skip('#mkdirSync', function() {
-		(function() { fs.mkdirSync(); }).should.throw(/implemented/);
+	it('#mkdirSync', function() {
+		(function() {
+			fs.mkdirSync('mkdirSync');
+		}).should.not.throw();
+		fs.existsSync('mkdirSync').should.be.true;
+		fs.statSync('mkdirSync').isDirectory().should.be.true;
+
+		(function() {
+			fs.mkdirSync('i/cant/create/this');
+		}).should.throw(/create/);
 	});
 
 	it.skip('#readdir', function() {
