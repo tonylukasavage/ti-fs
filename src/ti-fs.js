@@ -357,11 +357,20 @@ fs.mkdirSync = function mkdirSync(path, mode) {
 };
 
 fs.readdir = function readdir(path, callback) {
-	throw new Error('readdir not yet implemented');
+	setTimeout(function() {
+		var files = [],
+			err = null;
+		try {
+			files = fs.readdirSync(path);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, files);
+	}, 0);
 };
 
 fs.readdirSync = function readdirSync(path) {
-	throw new Error('readdirSync not yet implemented');
+	return $F.getFile(path).getDirectoryListing();
 };
 
 fs.fstat = function fstat(fd, callback) {

@@ -417,12 +417,25 @@ describe('ti-fs', function() {
 		}).should.throw(/create/);
 	});
 
-	it.skip('#readdir', function() {
-		(function() { fs.readdir(); }).should.throw(/implemented/);
+	it('#readdir', function(done) {
+		fs.readdir('./', function(err, files) {
+			should.not.exist(err);
+			files.should.be.an.Array;
+			files.should.containEql('app.js');
+			files.should.containEql('ti-mocha.js');
+			files.should.containEql('ti-fs.js');
+			files.should.containEql('should.js');
+			return done();
+		});
 	});
 
-	it.skip('#readdirSync', function() {
-		(function() { fs.readdirSync(); }).should.throw(/implemented/);
+	it('#readdirSync', function() {
+		var files = fs.readdirSync('./');
+		files.should.be.an.Array;
+		files.should.containEql('app.js');
+		files.should.containEql('ti-mocha.js');
+		files.should.containEql('ti-fs.js');
+		files.should.containEql('should.js');
 	});
 
 	it('#fstat', function(done) {
