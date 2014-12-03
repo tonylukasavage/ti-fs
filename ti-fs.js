@@ -1027,11 +1027,23 @@ fs.ftruncateSync = function ftruncateSync(fd, len) {
 };
 
 fs.rmdir = function rmdir(path, callback) {
-	throw new Error('rmdir not yet implemented');
+	setTimeout(function() {
+		var err = null;
+		try {
+			if (!$F.getFile(path).deleteDirectory()) {
+				err = new Error('could not delete directory');
+			}
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.rmdirSync = function rmdirSync(path) {
-	throw new Error('rmdirSync not yet implemented');
+	if (!$F.getFile(path).deleteDirectory()) {
+		throw new Error('could not delete directory');
+	}
 };
 
 fs.mkdir = function mkdir(path, mode, callback) {
