@@ -24,6 +24,7 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 	* `fsync | fsyncSync`
 	* `link | linkSync`
 	* `symlink | symlinkSync`
+	* `utimes | utimesSync | futimes | futimesSync`
 	* `watch | watchFile | unwatchFile`
 	* `chmod | chmodSync | fchmod | fchmodSync | lchmod | lchmodSync`
 	* `chown | chownSync | fchown | fchownSync | lchown | lchownSync`

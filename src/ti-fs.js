@@ -470,22 +470,6 @@ fs.unlinkSync = function unlinkSync(path) {
 	}
 };
 
-fs.utimes = function utimes(path, atime, mtime, callback) {
-	throw new Error('utimes not yet implemented');
-};
-
-fs.utimesSync = function utimesSync(path, atime, mtime) {
-	throw new Error('utimesSync not yet implemented');
-};
-
-fs.futimes = function futimes(fd, atime, mtime, callback) {
-	throw new Error('futimes not yet implemented');
-};
-
-fs.futimesSync = function futimesSync(fd, atime, mtime) {
-	throw new Error('futimesSync not yet implemented');
-};
-
 fs.writeFile = function writeFile(path, data, options, callback) {
 	callback = maybeCallback(arguments[arguments.length-1]);
 	if (!options || util.isFunction(options)) {
@@ -586,6 +570,10 @@ fs.linkSync = function linkSync(srcpath, dstpath) {};
 fs.watch = function watch(filename) {};
 fs.watchFile = function watchFile(filename) {};
 fs.unwatchFile = function unwatchFile(filename, listener) {};
+fs.utimes = function utimes(path, atime, mtime, callback) { return callback(); };
+fs.utimesSync = function utimesSync(path, atime, mtime) {};
+fs.futimes = function futimes(fd, atime, mtime, callback) { return callback(); };
+fs.futimesSync = function futimesSync(fd, atime, mtime) {};
 
 // helpers
 function maybeCallback(o) {

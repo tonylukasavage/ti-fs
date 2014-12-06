@@ -645,20 +645,30 @@ describe('ti-fs', function() {
 		}).should.not.throw();
 	});
 
-	it.skip('#utimes', function() {
-		(function() { fs.utimes(); }).should.throw(/implemented/);
+	it('#utimes', function(done) {
+		fs.utimes(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#utimesSync', function() {
-		(function() { fs.utimesSync(); }).should.throw(/implemented/);
+	it('#utimesSync', function() {
+		(function() {
+			should.not.exist(fs.utimesSync());
+		}).should.not.throw();
 	});
 
-	it.skip('#futimes', function() {
-		(function() { fs.futimes(); }).should.throw(/implemented/);
+	it('#futimes', function(done) {
+		fs.futimes(null, null, null, function(err) {
+			should.not.exist(err);
+			return done();
+		});
 	});
 
-	it.skip('#futimesSync', function() {
-		(function() { fs.futimesSync(); }).should.throw(/implemented/);
+	it('#futimesSync', function() {
+		(function() {
+			should.not.exist(fs.futimesSync());
+		}).should.not.throw();
 	});
 
 	it('#writeFile', function(done) {
