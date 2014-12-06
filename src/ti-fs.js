@@ -450,11 +450,24 @@ fs.readlinkSync = function readlinkSync(path) {
 };
 
 fs.unlink = function unlink(path, callback) {
-	throw new Error('unlink not yet implemented');
+	setTimeout(function() {
+		var err = null;
+		try {
+			fs.unlinkSync(path);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.unlinkSync = function unlinkSync(path) {
-	throw new Error('unlinkSync not yet implemented');
+	var file = $F.getFile(path);
+	if (file.isFile() || file.symbolicLink) {
+		file.deleteFile();
+	} else {
+		throw new Error('operation not permitted \'' + path + '\'');
+	}
 };
 
 fs.utimes = function utimes(path, atime, mtime, callback) {

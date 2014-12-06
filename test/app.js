@@ -534,12 +534,37 @@ describe('ti-fs', function() {
 		}).should.not.throw();
 	});
 
-	it.skip('#unlink', function() {
-		(function() { fs.unlink(); }).should.throw(/implemented/);
+	it('#unlink', function(done) {
+		fs.writeFileSync('unlink.file','');
+		fs.unlink('unlink.file', function(err) {
+			should.not.exist(err);
+			fs.existsSync('unlink.file').should.be.false;
+
+			fs.unlink('KS_nav_views.png', function(err) {
+				should.not.exist(err);
+				fs.existsSync('KS_nav_views.png').should.be.false;
+
+				fs.unlink('modules', function(err) {
+					should.exist(err);
+					err.message.should.match(/permitted/);
+					return done();
+				});
+			});
+		});
 	});
 
-	it.skip('#unlinkSync', function() {
-		(function() { fs.unlinkSync(); }).should.throw(/implemented/);
+	it('#unlinkSync', function() {
+		fs.writeFileSync('unlinkSync.file','');
+		fs.unlinkSync('unlinkSync.file');
+		fs.existsSync('unlinkSync.file').should.be.false;
+
+		fs.unlinkSync('KS_nav_ui.png');
+		fs.existsSync('KS_nav_ui.png').should.be.false;
+
+		(function() {
+			fs.unlinkSync('modules');
+		}).should.throw(/permitted/);
+		fs.existsSync('modules').should.be.true;
 	});
 
 	it('#fchmod', function(done) {
