@@ -1140,11 +1140,24 @@ fs.statSync = function statSync(path) {
 };
 
 fs.readlink = function readlink(path, callback) {
-	throw new Error('readlink not yet implemented');
+	setTimeout(function() {
+		var result = null,
+			err = null;
+		try {
+			result = fs.readlinkSync(path);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err, result);
+	}, 0);
 };
 
 fs.readlinkSync = function readlinkSync(path) {
-	throw new Error('readlinkSync not yet implemented');
+	var file = $F.getFile(path);
+	if (!file.symbolicLink) {
+		throw new Error('invalid argument \'' + path  +'\'');
+	}
+	return file.resolve();
 };
 
 fs.unlink = function unlink(path, callback) {
