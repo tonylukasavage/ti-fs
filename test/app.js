@@ -4,7 +4,8 @@ var async = require('async'),
 require('ti-mocha');
 
 var FILE = 'file.txt',
-	CONTENT = 'I\'m a text file.';
+	CONTENT = 'I\'m a text file.',
+	IS_IOS = Ti.Platform.name === 'iPhone OS';
 
 describe('ti-fs', function() {
 
@@ -491,12 +492,20 @@ describe('ti-fs', function() {
 		}).should.throw();
 	});
 
-	it.skip('#readlink', function() {
-		(function() { fs.readlink(); }).should.throw(/implemented/);
+	var readlinkFunc = IS_IOS ? it : it.skip;
+	readlinkFunc('#readlink', function(done) {
+		fs.readlink('app.js', function(err, link) {
+			should.not.exist(err);
+			link.should.match(/app\.js$/);
+			return done();
+		});
 	});
 
-	it.skip('#readlinkSync', function() {
-		(function() { fs.readlinkSync(); }).should.throw(/implemented/);
+	readlinkFunc('#readlinkSync', function() {
+		fs.readlinkSync('app.js').should.match(/app\.js$/);
+		(function() {
+			fs.readlinkSync('Default.png');
+		}).should.throw(/invalid/);
 	});
 
 	it('#symlink', function(done) {

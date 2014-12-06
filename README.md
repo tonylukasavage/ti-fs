@@ -36,6 +36,7 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 	* `hex`
 	* `ucs2 | ucs-2`
 	* `utf16le | utf-16le`
+* `readlink` and `readlinkSync` will throw an error if used on non-symbolic links, as expected, but will not returned the source path. Titanium has no means to return the source path of the symbolic link, so the result of [Ti.Filesystem.File.resolve()](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.File-method-resolve) is returned.
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
