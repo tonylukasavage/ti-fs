@@ -17,7 +17,6 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 
 * All `buffer` buffers are assumed to be [Ti.Buffer][] instances.
 * All `fd` file descriptors are assumed to be [Ti.Filesystem.FileStream][] instances.
-* The encoding types `binary` and `blob` return [Ti.Blob][] instances.
 
 ## caveats
 
