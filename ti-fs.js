@@ -1368,10 +1368,6 @@ fs.FileWriteStream = function FileWriteStream(path, options) {
 	throw new Error('FileWriteStream not yet implemented');
 };
 
-fs.SyncWriteStream = function SyncWriteStream(fd, options) {
-	throw new Error('SyncWriteStream not yet implemented');
-};
-
 // no-ops
 fs.fsync = function fsync(fd, callback) { return callback(); };
 fs.fsyncSync = function fsyncSync(fd) {};
