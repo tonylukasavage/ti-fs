@@ -1,4 +1,4 @@
-# ti-fs ![implemented 89%](http://img.shields.io/badge/implemented-89%-green.svg)
+# ti-fs ![implemented 92%](http://img.shields.io/badge/implemented-92%-brightgreen.svg)
 
 node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.js `fs` for use with [browserify][].
 
