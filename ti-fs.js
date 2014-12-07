@@ -1214,11 +1214,35 @@ fs.writeFileSync = function writeFileSync(path, data, options) {
 };
 
 fs.appendFile = function appendFile(path, data, options, callback_) {
-	throw new Error('appendFile not yet implemented');
+	var callback = maybeCallback(arguments[arguments.length-1]);
+	if (!options || util.isFunction(options)) {
+		options = {};
+	}
+
+	setTimeout(function() {
+		var err = null;
+		try {
+			fs.appendFileSync(path, data, options);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.appendFileSync = function appendFileSync(path, data, options) {
-	throw new Error('appendFileSync not yet implemented');
+	options = options || {};
+	var encoding = options.encoding || 'utf8',
+		fd = fs.openSync(path, 'a'),
+		buffer;
+
+	if (data.apiName === 'Ti.Buffer') {
+		buffer = data;
+	} else {
+		buffer = Ti.createBuffer({value:data});
+	}
+	fs.writeSync(fd, buffer);
+	fs.closeSync(fd);
 };
 
 fs.realpathSync = function realpathSync(p, cache) {
@@ -1301,7 +1325,7 @@ function assertFlags(flags) {
 	return tiMode;
 }
 
-var ENCODINGS = ['ascii','utf8','utf-8','base64','binary','blob'];
+var ENCODINGS = ['ascii','utf8','utf-8','base64','binary'];
 function assertEncoding(encoding) {
 	if (encoding && ENCODINGS.indexOf(encoding.toLowerCase()) === -1) {
 		throw new Error('Unknown encoding: ' + encoding);
@@ -1326,8 +1350,6 @@ function convertBuffer(buffer, encoding) {
 			return buffer.toString();
 		case 'base64':
 			return Ti.Utils.base64encode(buffer.toString()).toString();
-		case 'blob':
-			return buffer.toBlob();
 		default:
 			throw new Error('Unknown encoding: ' + encoding);
 	}
