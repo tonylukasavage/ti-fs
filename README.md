@@ -36,7 +36,8 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 	* `hex`
 	* `ucs2 | ucs-2`
 	* `utf16le | utf-16le`
-* `readlink` and `readlinkSync` will throw an error if used on non-symbolic links, as expected, but will not returned the source path. Titanium has no means to return the source path of the symbolic link, so the result of [Ti.Filesystem.File.resolve()](http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.File-method-resolve) is returned.
+* `readlink` and `readlinkSync` will throw an error if used on non-symbolic links, as expected, but will not returned the source path. Titanium has no means to return the source path of the symbolic link, so the result of [Ti.Filesystem.File.resolve()][] is returned.
+* `realpath` and `realpathSync` simply return the result of [Ti.Filesystem.File.resolve()][]. The details of what is necessary to completely implement them is in [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5)
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
@@ -49,3 +50,4 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 [Ti.Blob]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Blob
 [Ti.Buffer]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Buffer
 [Ti.Filesystem.FileStream]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.FileStream
+[Ti.Filesystem.File.resolve()]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Filesystem.File-method-resolve

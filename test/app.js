@@ -742,12 +742,16 @@ describe('ti-fs', function() {
 		}).should.not.throw();
 	});
 
-	it.skip('#realpathSync', function() {
-		(function() { fs.realpathSync(); }).should.throw(/implemented/);
+	it('#realpathSync', function() {
+		fs.realpathSync('app.js').should.equal(Ti.Filesystem.getFile('app.js').resolve());
 	});
 
-	it.skip('#realpath', function() {
-		(function() { fs.realpath(); }).should.throw(/implemented/);
+	it('#realpath', function(done) {
+		fs.realpath('app.js', function(err, res) {
+			should.not.exist(err);
+			res.should.equal(Ti.Filesystem.getFile('app.js').resolve());
+			return done();
+		});
 	});
 
 	it.skip('#createReadStream', function() {
