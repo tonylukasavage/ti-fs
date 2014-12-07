@@ -781,54 +781,54 @@ fs.existsSync = function existsSync(path) {
 fs.readFile = function readFile(path, options, callback_) {
 	var callback = maybeCallback(arguments[arguments.length-1]);
 	if (!options || util.isFunction(options)) {
-    options = { encoding: null, flag: 'r' };
-  } else if (util.isString(options)) {
-    options = { encoding: options, flag: 'r' };
-  } else if (!util.isObject(options)) {
-    throw new TypeError('Bad arguments');
-  }
+		options = { encoding: null, flag: 'r' };
+	} else if (util.isString(options)) {
+		options = { encoding: options, flag: 'r' };
+	} else if (!util.isObject(options)) {
+		throw new TypeError('Bad arguments');
+	}
 
-  var encoding = options.encoding,
-  	flag = options.flag || 'r';
-  assertEncoding(options.encoding);
+	var encoding = options.encoding,
+		flag = options.flag || 'r';
+	assertEncoding(options.encoding);
 
-  fs.open(path, flag, function(err, fd) {
-  	if (err) { return callback(err); }
-  	fs.fstat(fd, function(err, stats) {
-  		if (err) { return callback(err); }
-  		var buffer = Ti.createBuffer({length:stats.size});
-  		fs.read(fd, buffer, function(err, data) {
-  			if (err) { return callback(err); }
-  			fs.close(fd, function(err) {
-  				if (err) { return callback(err); }
-  				return callback(err, encoding ? convertBuffer(buffer, encoding) : buffer);
-  			});
-  		});
-  	});
-  });
+	fs.open(path, flag, function(err, fd) {
+		if (err) { return callback(err); }
+		fs.fstat(fd, function(err, stats) {
+			if (err) { return callback(err); }
+			var buffer = Ti.createBuffer({length:stats.size});
+			fs.read(fd, buffer, function(err, data) {
+				if (err) { return callback(err); }
+				fs.close(fd, function(err) {
+					if (err) { return callback(err); }
+					return callback(err, encoding ? convertBuffer(buffer, encoding) : buffer);
+				});
+			});
+		});
+	});
 };
 
 fs.readFileSync = function readFileSync(path, options) {
 	if (!options) {
-    options = { encoding: null, flag: 'r' };
-  } else if (util.isString(options)) {
-    options = { encoding: options, flag: 'r' };
-  } else if (!util.isObject(options)) {
-    throw new TypeError('Bad arguments');
-  }
+		options = { encoding: null, flag: 'r' };
+	} else if (util.isString(options)) {
+		options = { encoding: options, flag: 'r' };
+	} else if (!util.isObject(options)) {
+		throw new TypeError('Bad arguments');
+	}
 
-  var encoding = options.encoding,
-  	flag = options.flag || 'r';
-  assertEncoding(options.encoding);
+	var encoding = options.encoding,
+		flag = options.flag || 'r';
+	assertEncoding(options.encoding);
 
-  var fd = fs.openSync(path, flag /*, mode */),
-  	size = fs.fstatSync(fd).size,
-  	buffer = Ti.createBuffer({length:size});
+	var fd = fs.openSync(path, flag /*, mode */),
+		size = fs.fstatSync(fd).size,
+		buffer = Ti.createBuffer({length:size});
 
-  fs.readSync(fd, buffer);
-  fs.closeSync(fd);
+	fs.readSync(fd, buffer);
+	fs.closeSync(fd);
 
-  return encoding ? convertBuffer(buffer, encoding) : buffer;
+	return encoding ? convertBuffer(buffer, encoding) : buffer;
 };
 
 fs.close = function close(fd, callback) {
@@ -1245,12 +1245,103 @@ fs.appendFileSync = function appendFileSync(path, data, options) {
 	fs.closeSync(fd);
 };
 
+// var splitRootRe = /^[\/]*/;
+// var nextPartRe = /(.*?)(?:[\/]+|$)/g;
 fs.realpathSync = function realpathSync(p, cache) {
-	throw new Error('realpathSync not yet implemented');
+	return $F.getFile(p).resolve();
+
+	// p = $F.getFile(p).resolve();
+
+	// if (cache && Object.prototype.hasOwnProperty.call(cache, p)) {
+	// 	return cache[p];
+	// }
+
+	// var original = p,
+	// 	seenLinks = {},
+	// 	knownHard = {};
+
+	// // current character position in p
+	// var pos;
+	// // the partial path so far, including a trailing slash if any
+	// var current;
+	// // the partial path without a trailing slash (except when pointing at a root)
+	// var base;
+	// // the partial path scanned in the previous round, with slash
+	// var previous;
+
+	// start();
+
+	// function start() {
+	// 	// Skip over roots
+	// 	var m = splitRootRe.exec(p);
+	// 	pos = m[0].length;
+	// 	current = m[0];
+	// 	base = m[0];
+	// 	previous = '';
+	// }
+
+	// // walk down the path, swapping out linked pathparts for their real
+ //  // values
+ //  // NB: p.length changes.
+ //  while (pos < p.length) {
+ //    // find the next part
+ //    nextPartRe.lastIndex = pos;
+ //    var result = nextPartRe.exec(p);
+ //    previous = current;
+ //    current += result[0];
+ //    base = previous + result[1];
+ //    pos = nextPartRe.lastIndex;
+
+ //    // continue if not a symlink
+ //    if (knownHard[base] || (cache && cache[base] === base)) {
+ //      continue;
+ //    }
+
+ //    var resolvedLink;
+ //    if (cache && Object.prototype.hasOwnProperty.call(cache, base)) {
+ //      // some known symbolic link.  no need to stat again.
+ //      resolvedLink = cache[base];
+ //    } else {
+ //      var stat = fs.lstatSync(base);
+ //      if (!stat.isSymbolicLink()) {
+ //        knownHard[base] = true;
+ //        if (cache) cache[base] = base;
+ //        continue;
+ //      }
+
+ //      fs.statSync(base);
+ //      var linkTarget = fs.readlinkSync(base);
+ //      resolvedLink = pathModule.resolve(previous, linkTarget);
+ //      // track this, if given a cache.
+ //      if (cache) cache[base] = resolvedLink;
+ //    }
+
+ //    // resolve the link, then start over
+ //    p = pathModule.resolve(resolvedLink, p.slice(pos));
+ //    start();
+ //  }
+
+ //  if (cache) cache[original] = p;
+
+ //  return p;
 };
 
 fs.realpath = function realpath(p, cache, cb) {
-	throw new Error('realpath not yet implemented');
+	cb = maybeCallback(arguments[arguments.length-1]);
+	if (!cache || util.isFunction(cache)) {
+		cache = {};
+	}
+
+	setTimeout(function() {
+		var err = null,
+			res = null;
+		try {
+			res = fs.realpathSync(p, cache);
+		} catch (e) {
+			err = e;
+		}
+		return cb(err, res);
+	}, 0);
 };
 
 fs.createReadStream = function createReadStream(path, options) {
