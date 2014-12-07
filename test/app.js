@@ -701,12 +701,27 @@ describe('ti-fs', function() {
 		fs.readFileSync('writeFileSync2.txt', 'utf8').should.equal('blarg');
 	});
 
-	it.skip('#appendFile', function() {
-		(function() { fs.appendFile(); }).should.throw(/implemented/);
+	it('#appendFile', function(done) {
+		fs.writeFileSync('appendFile.txt', 'this is my text');
+		fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text');
+		fs.appendFile('appendFile.txt', ' and then some', function(err) {
+			should.not.exist(err);
+			fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text and then some');
+			fs.appendFile('appendFile.txt', Ti.createBuffer({ value: '123456789' }), function(err) {
+				should.not.exist(err);
+				fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text and then some123456789');
+				return done();
+			});
+		});
 	});
 
-	it.skip('#appendFileSync', function() {
-		(function() { fs.appendFileSync(); }).should.throw(/implemented/);
+	it('#appendFileSync', function() {
+		fs.writeFileSync('appendFileSync.txt', 'this is my text');
+		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text');
+		fs.appendFileSync('appendFileSync.txt', ' and then some');
+		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text and then some');
+		fs.appendFileSync('appendFileSync.txt', Ti.createBuffer({ value: '123456789' }));
+		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text and then some123456789');
 	});
 
 	it('#watch', function() {

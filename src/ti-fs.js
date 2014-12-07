@@ -503,11 +503,35 @@ fs.writeFileSync = function writeFileSync(path, data, options) {
 };
 
 fs.appendFile = function appendFile(path, data, options, callback_) {
-	throw new Error('appendFile not yet implemented');
+	var callback = maybeCallback(arguments[arguments.length-1]);
+	if (!options || util.isFunction(options)) {
+		options = {};
+	}
+
+	setTimeout(function() {
+		var err = null;
+		try {
+			fs.appendFileSync(path, data, options);
+		} catch (e) {
+			err = e;
+		}
+		return callback(err);
+	}, 0);
 };
 
 fs.appendFileSync = function appendFileSync(path, data, options) {
-	throw new Error('appendFileSync not yet implemented');
+	options = options || {};
+	var encoding = options.encoding || 'utf8',
+		fd = fs.openSync(path, 'a'),
+		buffer;
+
+	if (data.apiName === 'Ti.Buffer') {
+		buffer = data;
+	} else {
+		buffer = Ti.createBuffer({value:data});
+	}
+	fs.writeSync(fd, buffer);
+	fs.closeSync(fd);
 };
 
 fs.realpathSync = function realpathSync(p, cache) {
