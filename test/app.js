@@ -778,9 +778,6 @@ describe('ti-fs', function() {
 		(function() { fs.FileWriteStream(); }).should.throw(/implemented/);
 	});
 
-	it.skip('#SyncWriteStream', function() {
-		(function() { fs.SyncWriteStream(); }).should.throw(/implemented/);
-	});
 
 });
 
