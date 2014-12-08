@@ -634,27 +634,27 @@ fs.realpath = function realpath(p, cache, cb) {
 };
 
 fs.createReadStream = function createReadStream(path, options) {
-	throw new Error('createReadStream not yet implemented');
+	throw new Error('createReadStream not implemented');
 };
 
 fs.ReadStream = function ReadStream(path, options) {
-	throw new Error('ReadStream not yet implemented');
+	throw new Error('ReadStream not implemented');
 };
 
 fs.FileReadStream = function FileReadStream(path, options) {
-	throw new Error('FileReadStream not yet implemented');
+	throw new Error('FileReadStream not implemented');
 };
 
 fs.createWriteStream = function createWriteStream(path, options) {
-	throw new Error('createWriteStream not yet implemented');
+	throw new Error('createWriteStream not implemented');
 };
 
 fs.WriteStream = function WriteStream(path, options) {
-	throw new Error('WriteStream not yet implemented');
+	throw new Error('WriteStream not implemented');
 };
 
 fs.FileWriteStream = function FileWriteStream(path, options) {
-	throw new Error('FileWriteStream not yet implemented');
+	throw new Error('FileWriteStream not implemented');
 };
 
 // no-ops
