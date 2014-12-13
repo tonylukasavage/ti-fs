@@ -26,14 +26,6 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 
 ## caveats
 
-* The following functions are not possible to implement with the Titanium API and are thus no-ops. While native modules might make some of this possible, there's about a 0.1% chance I'll be developing or merging any into this project:
-	* `fsync | fsyncSync`
-	* `link | linkSync`
-	* `symlink | symlinkSync`
-	* `utimes | utimesSync | futimes | futimesSync`
-	* `watch | watchFile | unwatchFile`
-	* `chmod | chmodSync | fchmod | fchmodSync | lchmod | lchmodSync`
-	* `chown | chownSync | fchown | fchownSync | lchown | lchownSync`
 * `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it directly, only the file to which it links.
 * Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions:
 	* `read | readSync`
