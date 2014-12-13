@@ -11,6 +11,12 @@ $ npm install ti-fs
 $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 ```
 
+## support
+
+> **IMPORTANT: ** The Android support is not accurate. Updates coming soon.
+
+![support chart](http://cl.ly/image/1N3Y0Z3o0Q1j/support.html.png)
+
 ## assumptions
 
 In the absence of a Titanium implementation of the node.js `buffer` module, the following assumptions are made:
