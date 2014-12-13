@@ -1,0 +1,445 @@
+<html>
+	<style type="text/css">
+		body {
+			font-family: verdana, sans-serif;
+			color: #666666;
+		}
+		th {
+			background-color: #F2F3EF;
+		}
+		td, th {
+			height: 36px;
+		}
+		td {
+			text-align: center;
+			vertical-align: middle;
+			height: 30px;
+		}
+		td:first-child {
+			background-color: #F2F3EF;
+			padding-left: 10px;
+			text-align: left;
+		}
+		.yes {
+			background-color: #00882D;
+			color: #ffffff;
+		}
+		.almost {
+			background-color: #40A662;
+			color: #ffffff;
+		}
+		.noop {
+			background-color: #ffffff;
+			color: #CCBD00;
+			border: 2px solid #CCBD00;
+		}
+		.no {
+			background-color: #CB000F;
+			color: #ffffff;
+		}
+	</style>
+	<body>
+		<table style="width:80%" cellspacing="2">
+			<tr>
+				<th style="width:30%"></th>
+				<th style="width:35%">ios</th>
+				<th style="width:35%">android</th>
+			</tr>
+			<tr>
+				<td>appendFile</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>appendFileSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>chmod</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>chmodSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>chown</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>chownSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>close</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>closeSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>createReadStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+			<tr>
+				<td>createWriteStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+			<tr>
+				<td>exists</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>existsSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>fchmod</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>fchmodSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>fchown</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>fchownSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>FileReadStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+			<tr>
+				<td>FileWriteStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+			<tr>
+				<td>fstat</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>fstatSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>fsync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>fsyncSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>ftruncate</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>ftruncateSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>futimes</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>futimesSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>lchmod</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>lchmodSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>lchown</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>lchownSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>link</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>linkSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>lstat</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>lstatSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>mkdir</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>mkdirSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>open</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>openSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>read</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readdir</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readdirSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readFile</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readFileSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readlink</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>readlinkSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>ReadStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+			<tr>
+				<td>realpath<sup>*</sup></td>
+				<td class="almost">almost</td>
+				<td class="almost">almost</td>
+			</tr>
+			<tr>
+				<td>realpathSync<sup>*</sup></td>
+				<td class="almost">almost</td>
+				<td class="almost">almost</td>
+			</tr>
+			<tr>
+				<td>rename</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>renameSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>rmdir</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>rmdirSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>stat</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>statSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isBlockDevice</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isCharacterDevice</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isDirectory</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isFile</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isSymbolicLink</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isFIFO</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>Stats.isSocket</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>symlink</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>symlinkSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>truncate</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>truncateSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>unlink</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>unlinkSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>unwatchFile</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>utimes</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>utimesSync</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>watch</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>watchFile</td>
+				<td class="noop">no-op</td>
+				<td class="noop">no-op</td>
+			</tr>
+			<tr>
+				<td>write</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>writeFile</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>writeFileSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>writeSync</td>
+				<td class="yes">yes</td>
+				<td class="yes">yes</td>
+			</tr>
+			<tr>
+				<td>WriteStream</td>
+				<td class="no">no</td>
+				<td class="no">no</td>
+			</tr>
+		</table>
+	</body>
+</html>
