@@ -379,19 +379,6 @@ describe('ti-fs', function() {
 		}).should.throw(/directory/);
 	});
 
-	it('#fsync', function(done) {
-		fs.fsync(null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#fsyncSync', function() {
-		(function() {
-			should.not.exist(fs.fsyncSync());
-		}).should.not.throw();
-	});
-
 	it('#mkdir', function(done) {
 		fs.mkdir('mkdir', function(err) {
 			should.not.exist(err);
@@ -508,32 +495,6 @@ describe('ti-fs', function() {
 		}).should.throw(/invalid/);
 	});
 
-	it('#symlink', function(done) {
-		fs.symlink(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#symlinkSync', function() {
-		(function() {
-			should.not.exist(fs.symlinkSync());
-		}).should.not.throw();
-	});
-
-	it('#link', function(done) {
-		fs.link(null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#linkSync', function() {
-		(function() {
-			should.not.exist(fs.linkSync());
-		}).should.not.throw();
-	});
-
 	it('#unlink', function(done) {
 		fs.writeFileSync('unlink.file','');
 		fs.unlink('unlink.file', function(err) {
@@ -565,110 +526,6 @@ describe('ti-fs', function() {
 			fs.unlinkSync('modules');
 		}).should.throw(/permitted/);
 		fs.existsSync('modules').should.be.true;
-	});
-
-	it('#fchmod', function(done) {
-		fs.fchmod(null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#fchmodSync', function() {
-		(function() {
-			should.not.exist(fs.fchmodSync());
-		}).should.not.throw();
-	});
-
-	it('#lchmod', function(done) {
-		fs.lchmod(null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#lchmodSync', function() {
-		(function() {
-			should.not.exist(fs.lchmodSync());
-		}).should.not.throw();
-	});
-
-	it('#chmod', function(done) {
-		fs.chmod(null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#chmodSync', function() {
-		(function() {
-			should.not.exist(fs.chmodSync());
-		}).should.not.throw();
-	});
-
-	it('#lchown', function(done) {
-		fs.lchown(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#lchownSync', function() {
-		(function() {
-			should.not.exist(fs.lchownSync());
-		}).should.not.throw();
-	});
-
-	it('#fchown', function(done) {
-		fs.fchown(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#fchownSync', function() {
-		(function() {
-			should.not.exist(fs.fchownSync());
-		}).should.not.throw();
-	});
-
-	it('#chown', function(done) {
-		fs.chown(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#chownSync', function() {
-		(function() {
-			should.not.exist(fs.chownSync());
-		}).should.not.throw();
-	});
-
-	it('#utimes', function(done) {
-		fs.utimes(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#utimesSync', function() {
-		(function() {
-			should.not.exist(fs.utimesSync());
-		}).should.not.throw();
-	});
-
-	it('#futimes', function(done) {
-		fs.futimes(null, null, null, function(err) {
-			should.not.exist(err);
-			return done();
-		});
-	});
-
-	it('#futimesSync', function() {
-		(function() {
-			should.not.exist(fs.futimesSync());
-		}).should.not.throw();
 	});
 
 	it('#writeFile', function(done) {
@@ -724,24 +581,6 @@ describe('ti-fs', function() {
 		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text and then some123456789');
 	});
 
-	it('#watch', function() {
-		(function() {
-			should.not.exist(fs.watch());
-		}).should.not.throw();
-	});
-
-	it('#watchFile', function() {
-		(function() {
-			should.not.exist(fs.watchFile());
-		}).should.not.throw();
-	});
-
-	it('#unwatchFile', function() {
-		(function() {
-			should.not.exist(fs.unwatchFile());
-		}).should.not.throw();
-	});
-
 	it('#realpathSync', function() {
 		fs.realpathSync('app.js').should.equal(Ti.Filesystem.getFile('app.js').resolve());
 	});
@@ -778,6 +617,169 @@ describe('ti-fs', function() {
 		(function() { fs.FileWriteStream(); }).should.throw(/implemented/);
 	});
 
+
+	describe('(no-ops)', function() {
+		it('#watch', function() {
+			(function() {
+				should.not.exist(fs.watch());
+			}).should.not.throw();
+		});
+
+		it('#watchFile', function() {
+			(function() {
+				should.not.exist(fs.watchFile());
+			}).should.not.throw();
+		});
+
+		it('#unwatchFile', function() {
+			(function() {
+				should.not.exist(fs.unwatchFile());
+			}).should.not.throw();
+		});
+
+		it('#fchmod', function(done) {
+			fs.fchmod(null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#fchmodSync', function() {
+			(function() {
+				should.not.exist(fs.fchmodSync());
+			}).should.not.throw();
+		});
+
+		it('#lchmod', function(done) {
+			fs.lchmod(null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#lchmodSync', function() {
+			(function() {
+				should.not.exist(fs.lchmodSync());
+			}).should.not.throw();
+		});
+
+		it('#chmod', function(done) {
+			fs.chmod(null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#chmodSync', function() {
+			(function() {
+				should.not.exist(fs.chmodSync());
+			}).should.not.throw();
+		});
+
+		it('#lchown', function(done) {
+			fs.lchown(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#lchownSync', function() {
+			(function() {
+				should.not.exist(fs.lchownSync());
+			}).should.not.throw();
+		});
+
+		it('#fchown', function(done) {
+			fs.fchown(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#fchownSync', function() {
+			(function() {
+				should.not.exist(fs.fchownSync());
+			}).should.not.throw();
+		});
+
+		it('#chown', function(done) {
+			fs.chown(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#chownSync', function() {
+			(function() {
+				should.not.exist(fs.chownSync());
+			}).should.not.throw();
+		});
+
+		it('#utimes', function(done) {
+			fs.utimes(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#utimesSync', function() {
+			(function() {
+				should.not.exist(fs.utimesSync());
+			}).should.not.throw();
+		});
+
+		it('#futimes', function(done) {
+			fs.futimes(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#futimesSync', function() {
+			(function() {
+				should.not.exist(fs.futimesSync());
+			}).should.not.throw();
+		});
+
+		it('#symlink', function(done) {
+			fs.symlink(null, null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#symlinkSync', function() {
+			(function() {
+				should.not.exist(fs.symlinkSync());
+			}).should.not.throw();
+		});
+
+		it('#link', function(done) {
+			fs.link(null, null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#linkSync', function() {
+			(function() {
+				should.not.exist(fs.linkSync());
+			}).should.not.throw();
+		});
+
+		it('#fsync', function(done) {
+			fs.fsync(null, function(err) {
+				should.not.exist(err);
+				return done();
+			});
+		});
+
+		it('#fsyncSync', function() {
+			(function() {
+				should.not.exist(fs.fsyncSync());
+			}).should.not.throw();
+		});
+	});
 
 });
 
