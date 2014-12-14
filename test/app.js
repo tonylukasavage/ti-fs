@@ -5,7 +5,26 @@ require('ti-mocha');
 
 var FILE = 'file.txt',
 	CONTENT = 'I\'m a text file.',
-	IS_IOS = Ti.Platform.name === 'iPhone OS';
+	IS_IOS = Ti.Platform.name === 'iPhone OS',
+	IS_ANDROID = Ti.Platform.name === 'android',
+	DATA_DIR = Ti.Filesystem.applicationDataDirectory;
+
+function createFile(filepath) {
+	var file;
+	filepath = DATA_DIR + filepath;
+	try {
+		if (IS_ANDROID) {
+			fs.writeFileSync(filepath, '');
+			file = Ti.Filesystem.getFile(filepath);
+		} else {
+			file = Ti.Filesystem.getFile(filepath);
+			file.createFile();
+		}
+	} catch (e) {
+		return null;
+	}
+	return file;
+}
 
 describe('ti-fs', function() {
 
@@ -16,7 +35,7 @@ describe('ti-fs', function() {
 	});
 
 	it('#Stats contain file attributes', function() {
-		statFileTxt(new fs.Stats('file.txt'));
+		statFileTxt(new fs.Stats(Ti.Filesystem.getFile(DATA_DIR, FILE).resolve()));
 	});
 
 	it('#exists', function(done) {
@@ -242,19 +261,19 @@ describe('ti-fs', function() {
 
 	it('#write', function(done) {
 		var test = 'WRITETEST';
-		var file = Ti.Filesystem.getFile('write.txt');
-		file.createFile().should.be.true;
+		var file = createFile('write.txt');
+		file.exists().should.be.true;
 
-		var fd = fs.openSync('write.txt', 'w');
+		var fd = fs.openSync(file.resolve(), 'w');
 		fs.write(fd, Ti.createBuffer({value:test}), function(err, bytes, buffer) {
 			should.not.exist(err);
 			bytes.should.equal(test.length);
-			fs.readFileSync('write.txt', 'utf8').should.equal(test);
+			fs.readFileSync(file.resolve(), 'utf8').should.equal(test);
 
 			fs.write(fd, Ti.createBuffer({value:'foo'}), 1, 2, function(err, bytes, buffer) {
 				should.not.exist(err);
 				bytes.should.equal(2);
-				fs.readFileSync('write.txt', 'utf8').should.equal('WRITETESToo');
+				fs.readFileSync(file.resolve(), 'utf8').should.equal('WRITETESToo');
 				fs.closeSync(fd);
 				return done();
 			});
@@ -263,28 +282,29 @@ describe('ti-fs', function() {
 
 	it('#writeSync', function() {
 		var test = 'WRITETEST';
-		var file = Ti.Filesystem.getFile('writeSync.txt');
-		file.createFile().should.be.true;
+		var file = createFile('writeSync.txt');
+		file.exists().should.be.true;
 
-		var fd = fs.openSync('writeSync.txt', 'w');
+		var fd = fs.openSync(file.resolve(), 'w');
 		var bytes = fs.writeSync(fd, Ti.createBuffer({value:test}));
 		bytes.should.equal(test.length);
-		fs.readFileSync('writeSync.txt', 'utf8').should.equal(test);
+		fs.readFileSync(file.resolve(), 'utf8').should.equal(test);
 
 		bytes = fs.writeSync(fd, Ti.createBuffer({value:'foo'}), 1, 2);
 		bytes.should.equal(2);
-		fs.readFileSync('writeSync.txt', 'utf8').should.equal('WRITETESToo');
+		fs.readFileSync(file.resolve(), 'utf8').should.equal('WRITETESToo');
 
 		fs.closeSync(fd);
 	});
 
 	it('#rename', function(done) {
-		var file = Ti.Filesystem.getFile('rename.foo');
-		file.createFile();
+		var file = createFile('rename.foo');
+		var dst = file.resolve().replace(/rename\.foo$/, 'rename.bar');
+		file.exists().should.be.true;
 
-		fs.rename('rename.foo', 'rename.bar', function(err) {
+		fs.rename(file.resolve(), dst, function(err) {
 			should.not.exist(err);
-			var newFile = Ti.Filesystem.getFile('rename.bar');
+			var newFile = Ti.Filesystem.getFile(dst);
 			newFile.exists().should.be.true;
 			file.exists().should.be.false;
 			return done();
@@ -292,13 +312,14 @@ describe('ti-fs', function() {
 	});
 
 	it('#renameSync', function() {
-		var file = Ti.Filesystem.getFile('renameSync.foo');
-		file.createFile();
+		var file = createFile('renameSync.foo');
+		var dst = file.resolve().replace(/renameSync\.foo$/, 'renameSync.bar');
+		file.exists().should.be.true;
 
 		(function() {
-			fs.renameSync('renameSync.foo', 'renameSync.bar');
+			fs.renameSync(file.resolve(), dst);
 		}).should.not.throw();
-		var newFile = Ti.Filesystem.getFile('renameSync.bar');
+		var newFile = Ti.Filesystem.getFile(dst);
 		newFile.exists().should.be.true;
 		file.exists().should.be.false;
 	});
