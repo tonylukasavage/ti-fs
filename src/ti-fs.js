@@ -366,9 +366,7 @@ fs.mkdir = function mkdir(path, mode, callback) {
 	setTimeout(function() {
 		var err = null;
 		try {
-			if (!$F.getFile(path).createDirectory()) {
-				err = new Error('could not create directory');
-			}
+			fs.mkdirSync(path, mode);
 		} catch (e) {
 			err = e;
 		}
@@ -376,11 +374,20 @@ fs.mkdir = function mkdir(path, mode, callback) {
 	}, 0);
 };
 
-fs.mkdirSync = function mkdirSync(path, mode) {
-	if (!$F.getFile(path).createDirectory()) {
-		throw new Error('could not create directory');
-	}
-};
+if (IS_ANDROID) {
+	fs.mkdirSync = function mkdirSync(path, mode) {
+		$F.getFile(path).createDirectory();
+		if (!$F.getFile(path).exists()) {
+			throw new Error('could not create directory');
+		}
+	};
+} else {
+	fs.mkdirSync = function mkdirSync(path, mode) {
+		if (!$F.getFile(path).createDirectory()) {
+			throw new Error('could not create directory');
+		}
+	};
+}
 
 fs.readdir = function readdir(path, callback) {
 	setTimeout(function() {
