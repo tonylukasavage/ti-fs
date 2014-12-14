@@ -735,6 +735,10 @@ fs.Stats = function Stats(path) {
 
 	if (path) {
 		this.__file = $F.getFile(path);
+		if (!this.__file.exists()) {
+			throw new Error('file does not exist');
+		}
+
 		this.size = this.__file.size;
 		this.mode = 0;
 		this.ctime = new Date(this.__file.createTimestamp());
