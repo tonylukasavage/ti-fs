@@ -695,7 +695,7 @@ function maybeCallback(o) {
 
 function assertFlags(flags) {
 	var tiMode = MODE_MAP[flags];
-	if (!tiMode) {
+	if (tiMode == null) {
 		throw new Error('Unknown file open flag: ' + flags);
 	}
 	return tiMode;
