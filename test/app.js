@@ -13,6 +13,7 @@ function createFile(filepath) {
 	var file;
 	filepath = DATA_DIR + filepath;
 	try {
+		deleteFile(filepath);
 		if (IS_ANDROID) {
 			fs.writeFileSync(filepath, '');
 			file = Ti.Filesystem.getFile(filepath);
@@ -24,6 +25,13 @@ function createFile(filepath) {
 		return null;
 	}
 	return file;
+}
+
+function deleteFile(filepath) {
+	var file = Ti.Filesystem.getFile(filepath);
+	if (file.exists()) {
+		file.deleteFile();
+	}
 }
 
 describe('ti-fs', function() {
@@ -300,6 +308,7 @@ describe('ti-fs', function() {
 	it('#rename', function(done) {
 		var file = createFile('rename.foo');
 		var dst = file.resolve().replace(/rename\.foo$/, 'rename.bar');
+		deleteFile(dst);
 		file.exists().should.be.true;
 
 		fs.rename(file.resolve(), dst, function(err) {
@@ -314,6 +323,7 @@ describe('ti-fs', function() {
 	it('#renameSync', function() {
 		var file = createFile('renameSync.foo');
 		var dst = file.resolve().replace(/renameSync\.foo$/, 'renameSync.bar');
+		deleteFile(dst);
 		file.exists().should.be.true;
 
 		(function() {
@@ -325,38 +335,41 @@ describe('ti-fs', function() {
 	});
 
 	it('#truncate', function(done) {
-		fs.writeFileSync('truncate.txt', '1234567890');
-		fs.readFileSync('truncate.txt', 'utf8').should.equal('1234567890');
-		fs.truncate('truncate.txt', 4, function(err) {
+		var filepath = DATA_DIR + 'truncate.txt';
+		fs.writeFileSync(filepath, '1234567890');
+		fs.readFileSync(filepath, 'utf8').should.equal('1234567890');
+		fs.truncate(filepath, 4, function(err) {
 			should.not.exist(err);
-			fs.readFileSync('truncate.txt', 'utf8').should.equal('1234');
-			fs.truncate('truncate.txt', function(err) {
+			fs.readFileSync(filepath, 'utf8').should.equal('1234');
+			fs.truncate(filepath, function(err) {
 				should.not.exist(err);
-				fs.readFileSync('truncate.txt', 'utf8').should.equal('');
+				fs.readFileSync(filepath, 'utf8').should.equal('');
 				return done();
 			});
 		});
 	});
 
 	it('#truncateSync', function() {
-		fs.writeFileSync('truncateSync.txt', '1234567890');
-		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('1234567890');
-		fs.truncateSync('truncateSync.txt', 4);
-		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('1234');
-		fs.truncateSync('truncateSync.txt');
-		fs.readFileSync('truncateSync.txt', 'utf8').should.equal('');
+		var filepath = DATA_DIR + 'truncateSync.txt';
+		fs.writeFileSync(filepath, '1234567890');
+		fs.readFileSync(filepath, 'utf8').should.equal('1234567890');
+		fs.truncateSync(filepath, 4);
+		fs.readFileSync(filepath, 'utf8').should.equal('1234');
+		fs.truncateSync(filepath);
+		fs.readFileSync(filepath, 'utf8').should.equal('');
 	});
 
 	it('#ftruncate', function(done) {
-		fs.writeFileSync('ftruncate.txt', '1234567890');
-		fs.readFileSync('ftruncate.txt', 'utf8').should.equal('1234567890');
-		var fd = fs.openSync('ftruncate.txt', 'r');
+		var filepath = DATA_DIR + 'ftruncate.txt';
+		fs.writeFileSync(filepath, '1234567890');
+		fs.readFileSync(filepath, 'utf8').should.equal('1234567890');
+		var fd = fs.openSync(filepath, 'r');
 		fs.ftruncate(fd, 4, function(err) {
 			should.not.exist(err);
-			fs.readFileSync('ftruncate.txt', 'utf8').should.equal('1234');
+			fs.readFileSync(filepath, 'utf8').should.equal('1234');
 			fs.ftruncate(fd, function(err) {
 				should.not.exist(err);
-				fs.readFileSync('ftruncate.txt', 'utf8').should.equal('');
+				fs.readFileSync(filepath, 'utf8').should.equal('');
 				fs.closeSync(fd);
 				return done();
 			});
@@ -364,23 +377,25 @@ describe('ti-fs', function() {
 	});
 
 	it('#ftruncateSync', function() {
-		fs.writeFileSync('ftruncateSync.txt', '1234567890');
-		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('1234567890');
-		var fd = fs.openSync('ftruncateSync.txt', 'r');
+		var filepath = DATA_DIR + 'ftruncateSync.txt';
+		fs.writeFileSync(filepath, '1234567890');
+		fs.readFileSync(filepath, 'utf8').should.equal('1234567890');
+		var fd = fs.openSync(filepath, 'r');
 		fs.ftruncateSync(fd, 4);
-		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('1234');
+		fs.readFileSync(filepath, 'utf8').should.equal('1234');
 		fs.ftruncateSync(fd);
-		fs.readFileSync('ftruncateSync.txt', 'utf8').should.equal('');
+		fs.readFileSync(filepath, 'utf8').should.equal('');
 		fs.closeSync(fd);
 	});
 
 	it('#rmdir', function(done) {
-		Ti.Filesystem.getFile('rmdir').createDirectory().should.be.true;
-		fs.rmdir('rmdir', function(err) {
+		var filepath = DATA_DIR + 'rmdir';
+		Ti.Filesystem.getFile(filepath).createDirectory().should.be.true;
+		fs.rmdir(filepath, function(err) {
 			should.not.exist(err);
-			Ti.Filesystem.getFile('rmdirSync').exists().should.be.false;
+			Ti.Filesystem.getFile(filepath).exists().should.be.false;
 
-			fs.rmdir('idontexist', function(err) {
+			fs.rmdir(DATA_DIR + 'idontexist', function(err) {
 				should.exist(err);
 				err.should.match(/directory/);
 				return done();
@@ -389,22 +404,24 @@ describe('ti-fs', function() {
 	});
 
 	it('#rmdirSync', function() {
-		Ti.Filesystem.getFile('rmdirSync').createDirectory().should.be.true;
+		var filepath = DATA_DIR + 'rmdirSync';
+		Ti.Filesystem.getFile(filepath).createDirectory().should.be.true;
 		(function() {
-			fs.rmdirSync('rmdirSync');
+			fs.rmdirSync(filepath);
 		}).should.not.throw();
-		Ti.Filesystem.getFile('rmdirSync').exists().should.be.false;
+		Ti.Filesystem.getFile(filepath).exists().should.be.false;
 
 		(function() {
-			fs.rmdirSync('idontexist');
+			fs.rmdirSync(DATA_DIR + 'idontexist');
 		}).should.throw(/directory/);
 	});
 
 	it('#mkdir', function(done) {
-		fs.mkdir('mkdir', function(err) {
+		var filepath = DATA_DIR + 'mkdir';
+		fs.mkdir(filepath, function(err) {
 			should.not.exist(err);
-			fs.existsSync('mkdir').should.be.true;
-			fs.statSync('mkdir').isDirectory().should.be.true;
+			fs.existsSync(filepath).should.be.true;
+			fs.statSync(filepath).isDirectory().should.be.true;
 
 			fs.mkdir('i/cant/create/this', function(err) {
 				should.exist(err);
@@ -415,11 +432,13 @@ describe('ti-fs', function() {
 	});
 
 	it('#mkdirSync', function() {
+		var filepath = DATA_DIR + 'mkdirSync';
 		(function() {
-			fs.mkdirSync('mkdirSync');
+			console.log(filepath);
+			fs.mkdirSync(filepath);
 		}).should.not.throw();
-		fs.existsSync('mkdirSync').should.be.true;
-		fs.statSync('mkdirSync').isDirectory().should.be.true;
+		fs.existsSync(filepath).should.be.true;
+		fs.statSync(filepath).isDirectory().should.be.true;
 
 		(function() {
 			fs.mkdirSync('i/cant/create/this');
