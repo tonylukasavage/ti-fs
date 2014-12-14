@@ -713,6 +713,8 @@ var $F = Ti.Filesystem,
 	fs = exports,
 	util = require('util');
 
+var IS_ANDROID = Ti.Platform.osname === 'android';
+
 var MODE_MAP = {};
 MODE_MAP['r'] = MODE_MAP['r+'] = MODE_MAP['rs'] = MODE_MAP['rs+'] = $F.MODE_READ;
 MODE_MAP['w'] = MODE_MAP['w+'] = MODE_MAP['wx'] = MODE_MAP['wx+'] = $F.MODE_WRITE;
@@ -894,10 +896,20 @@ fs.read = function read(fd, buffer, offset, length, position, callback) {
 	}, 0);
 };
 
-fs.readSync = function readSync(fd, buffer, offset, length, position) {
-	// position is not handled in Titanium streams
-	return fd.read(buffer, offset, length);
-};
+// Android improperly handles undefined args passed to offset and/or length
+if (IS_ANDROID) {
+	fs.readSync = function readSync(fd, buffer, offset, length, position) {
+		if (offset == null && length == null) {
+			return fd.read(buffer);
+		} else {
+			return fd.read(buffer, offset, length);
+		}
+	};
+} else {
+	fs.readSync = function readSync(fd, buffer, offset, length, position) {
+		return fd.read(buffer, offset, length);
+	};
+}
 
 fs.write = function write(fd, buffer, offset, length, position, callback) {
 	// position is not handled in Titanium streams
@@ -920,10 +932,20 @@ fs.write = function write(fd, buffer, offset, length, position, callback) {
 	}, 0);
 };
 
-fs.writeSync = function writeSync(fd, buffer, offset, length, position) {
-	// position is not handled in Titanium streams
-	return fd.write(buffer, offset, length);
-};
+// Android improperly handles undefined args passed to offset and/or length
+if (IS_ANDROID) {
+	fs.writeSync = function writeSync(fd, buffer, offset, length, position) {
+		if (offset == null && length == null) {
+			return fd.write(buffer);
+		} else {
+			return fd.write(buffer, offset, length);
+		}
+	};
+} else {
+	fs.writeSync = function writeSync(fd, buffer, offset, length, position) {
+		return fd.write(buffer, offset, length);
+	};
+}
 
 fs.rename = function rename(oldPath, newPath, callback) {
 	setTimeout(function() {
