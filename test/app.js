@@ -102,7 +102,7 @@ describe('ti-fs', function() {
 		it('errors when fd is undefined', function(done) {
 			fs.close(undefined, function(err) {
 				should.exist(err);
-				err.message.should.match(/not an object/);
+				err.message.should.match(IS_ANDROID ? /'close'/ : /not an object/);
 				return done();
 			});
 		});
@@ -110,7 +110,7 @@ describe('ti-fs', function() {
 		it('errors when fd is not a Ti.Filesystem.FileStream', function(done) {
 			fs.close(123, function(err) {
 				should.exist(err);
-				err.message.should.match(/not a function/);
+				err.message.should.match(IS_ANDROID ? /'close'/ : /not a function/);
 				return done();
 			});
 		});
@@ -132,13 +132,13 @@ describe('ti-fs', function() {
 		it('errors when fd is undefined', function() {
 			(function() {
 				fs.closeSync();
-			}).should.throw(/not an object/);
+			}).should.throw(IS_ANDROID ? /'close'/ : /not an object/);
 		});
 
 		it('errors when fd is not a Ti.Filesystem.FileStream', function() {
 			(function() {
 				fs.closeSync(123);
-			}).should.throw(/not a function/);
+			}).should.throw(IS_ANDROID ? /'close'/ : /not a function/);
 		});
 
 		it('closes an fd', function() {
