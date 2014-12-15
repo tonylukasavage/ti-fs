@@ -548,14 +548,20 @@ describe('ti-fs', function() {
 	});
 
 	it('#unlink', function(done) {
-		fs.writeFileSync('unlink.file','');
-		fs.unlink('unlink.file', function(err) {
+		var filepath = DATA_DIR + 'unlink.file';
+		fs.writeFileSync(filepath,'');
+		fs.unlink(filepath, function(err) {
 			should.not.exist(err);
-			fs.existsSync('unlink.file').should.be.false;
+			fs.existsSync(filepath).should.be.false;
 
 			fs.unlink('KS_nav_views.png', function(err) {
-				should.not.exist(err);
-				fs.existsSync('KS_nav_views.png').should.be.false;
+				if (IS_IOS) {
+					should.not.exist(err);
+					fs.existsSync('KS_nav_views.png').should.be.false;
+				} else {
+					should.exist(err);
+					fs.existsSync('KS_nav_views.png').should.be.true;
+				}
 
 				fs.unlink('modules', function(err) {
 					should.exist(err);
@@ -567,17 +573,28 @@ describe('ti-fs', function() {
 	});
 
 	it('#unlinkSync', function() {
-		fs.writeFileSync('unlinkSync.file','');
-		fs.unlinkSync('unlinkSync.file');
-		fs.existsSync('unlinkSync.file').should.be.false;
+		var filepath = DATA_DIR + 'unlinkSync.file';
+		fs.writeFileSync(filepath,'');
+		fs.unlinkSync(filepath);
+		fs.existsSync(filepath).should.be.false;
 
-		fs.unlinkSync('KS_nav_ui.png');
-		fs.existsSync('KS_nav_ui.png').should.be.false;
+		if (IS_IOS) {
+			fs.unlinkSync('KS_nav_ui.png');
+			fs.existsSync('KS_nav_ui.png').should.be.false;
+		} else {
+			(function() {
+				fs.unlinkSync('KS_nav_ui.png');
+			}).should.throw();
+			fs.existsSync('KS_nav_ui.png').should.be.true;
+		}
 
 		(function() {
 			fs.unlinkSync('modules');
 		}).should.throw(/permitted/);
-		fs.existsSync('modules').should.be.true;
+
+		if (IS_IOS) {
+			fs.existsSync('modules').should.be.true;
+		}
 	});
 
 	it('#writeFile', function(done) {
