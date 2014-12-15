@@ -1,6 +1,6 @@
 {
   "name": "ti-fs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "node.js-style fs for Titanium",
   "keywords": [
     "titanium",
