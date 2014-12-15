@@ -1208,7 +1208,9 @@ fs.unlink = function unlink(path, callback) {
 fs.unlinkSync = function unlinkSync(path) {
 	var file = $F.getFile(path);
 	if (file.isFile() || file.symbolicLink) {
-		file.deleteFile();
+		if (!file.deleteFile()) {
+			throw new Error('unable to delete file');
+		}
 	} else {
 		throw new Error('operation not permitted \'' + path + '\'');
 	}
