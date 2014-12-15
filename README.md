@@ -4,8 +4,6 @@ node.js-style `fs` for Titanium. It can serve as a drop-in replacement for node.
 
 ## install [![npm version](https://badge.fury.io/js/ti-fs.svg)](http://badge.fury.io/js/ti-fs)
 
-> **NOT YET FUNCTIONAL**
-
 ```bash
 $ npm install ti-fs
 $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
