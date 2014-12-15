@@ -15,9 +15,9 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ![support chart](http://i.imgur.com/DOaPYFX.png)
 
-\* see [issue #7](https://github.com/tonylukasavage/ti-fs/issues/7) for details on `lstat` and `lstatSync`
-\*\* see [issue #6](https://github.com/tonylukasavage/ti-fs/issues/6) for details on `readlink` and `readlinkSync`
-\*\*\* see [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5) for details on `realpath` and `realpathSync`
+* \* see [issue #7](https://github.com/tonylukasavage/ti-fs/issues/7) for details on `lstat` and `lstatSync`
+* \*\* see [issue #6](https://github.com/tonylukasavage/ti-fs/issues/6) for details on `readlink` and `readlinkSync`
+* \*\*\* see [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5) for details on `realpath` and `realpathSync`
 
 ## assumptions
 
