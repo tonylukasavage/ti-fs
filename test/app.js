@@ -569,17 +569,19 @@ describe('ti-fs', function() {
 	});
 
 	it('#writeFile', function(done) {
-		fs.writeFile('writeFile.txt', 'test\nfoo', function(err) {
+		var filepath = DATA_DIR + 'writeFile.txt';
+		fs.writeFile(filepath, 'test\nfoo', function(err) {
 			should.not.exist(err);
-			var file = Ti.Filesystem.getFile('writeFile.txt');
+			var file = Ti.Filesystem.getFile(filepath);
 			file.exists().should.be.true;
-			fs.readFileSync('writeFile.txt', 'utf8').should.equal('test\nfoo');
+			fs.readFileSync(filepath, 'utf8').should.equal('test\nfoo');
 
-			fs.writeFile('writeFile2.txt', Ti.createBuffer({value:'blarg'}), function(err) {
+			var filepath2 = DATA_DIR + 'writeFile2.txt';
+			fs.writeFile(filepath2, Ti.createBuffer({value:'blarg'}), function(err) {
 				should.not.exist(err);
-				file = Ti.Filesystem.getFile('writeFile2.txt');
+				file = Ti.Filesystem.getFile(filepath2);
 				file.exists().should.be.true;
-				fs.readFileSync('writeFile2.txt', 'utf8').should.equal('blarg');
+				fs.readFileSync(filepath2, 'utf8').should.equal('blarg');
 
 				return done();
 			});
@@ -587,38 +589,42 @@ describe('ti-fs', function() {
 	});
 
 	it('#writeFileSync', function() {
-		fs.writeFileSync('writeFileSync.txt', 'test\nfoo');
-		var file = Ti.Filesystem.getFile('writeFileSync.txt');
+		var filepath = DATA_DIR + 'writeFileSync.txt';
+		fs.writeFileSync(filepath, 'test\nfoo');
+		var file = Ti.Filesystem.getFile(filepath);
 		file.exists().should.be.true;
-		fs.readFileSync('writeFileSync.txt', 'utf8').should.equal('test\nfoo');
+		fs.readFileSync(filepath, 'utf8').should.equal('test\nfoo');
 
-		fs.writeFileSync('writeFileSync2.txt', Ti.createBuffer({value:'blarg'}));
-		file = Ti.Filesystem.getFile('writeFileSync2.txt');
+		var filepath2 = DATA_DIR + 'writeFileSync2.txt';
+		fs.writeFileSync(filepath2, Ti.createBuffer({value:'blarg'}));
+		file = Ti.Filesystem.getFile(filepath2);
 		file.exists().should.be.true;
-		fs.readFileSync('writeFileSync2.txt', 'utf8').should.equal('blarg');
+		fs.readFileSync(filepath2, 'utf8').should.equal('blarg');
 	});
 
 	it('#appendFile', function(done) {
-		fs.writeFileSync('appendFile.txt', 'this is my text');
-		fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text');
-		fs.appendFile('appendFile.txt', ' and then some', function(err) {
+		var filepath = DATA_DIR + 'appendFile.txt';
+		fs.writeFileSync(filepath, 'this is my text');
+		fs.readFileSync(filepath, 'utf8').should.equal('this is my text');
+		fs.appendFile(filepath, ' and then some', function(err) {
 			should.not.exist(err);
-			fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text and then some');
-			fs.appendFile('appendFile.txt', Ti.createBuffer({ value: '123456789' }), function(err) {
+			fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some');
+			fs.appendFile(filepath, Ti.createBuffer({ value: '123456789' }), function(err) {
 				should.not.exist(err);
-				fs.readFileSync('appendFile.txt', 'utf8').should.equal('this is my text and then some123456789');
+				fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some123456789');
 				return done();
 			});
 		});
 	});
 
 	it('#appendFileSync', function() {
-		fs.writeFileSync('appendFileSync.txt', 'this is my text');
-		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text');
-		fs.appendFileSync('appendFileSync.txt', ' and then some');
-		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text and then some');
-		fs.appendFileSync('appendFileSync.txt', Ti.createBuffer({ value: '123456789' }));
-		fs.readFileSync('appendFileSync.txt', 'utf8').should.equal('this is my text and then some123456789');
+		var filepath = DATA_DIR + 'appendFileSync.txt';
+		fs.writeFileSync(filepath, 'this is my text');
+		fs.readFileSync(filepath, 'utf8').should.equal('this is my text');
+		fs.appendFileSync(filepath, ' and then some');
+		fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some');
+		fs.appendFileSync(filepath, Ti.createBuffer({ value: '123456789' }));
+		fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some123456789');
 	});
 
 	it('#realpathSync', function() {
