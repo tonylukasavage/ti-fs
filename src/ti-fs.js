@@ -361,18 +361,38 @@ fs.rmdirSync = function rmdirSync(path) {
 	}
 };
 
-fs.mkdir = function mkdir(path, mode, callback) {
-	callback = maybeCallback(arguments[arguments.length-1]);
-	setTimeout(function() {
-		var err = null;
-		try {
-			fs.mkdirSync(path, mode);
-		} catch (e) {
-			err = e;
-		}
-		return callback(err);
-	}, 0);
-};
+if (IS_ANDROID) {
+	fs.mkdir = function mkdir(path, mode, callback) {
+		callback = maybeCallback(arguments[arguments.length-1]);
+		setTimeout(function() {
+			var err = null;
+			try {
+				$F.getFile(path).createDirectory();
+				if (!$F.getFile(path).exists()) {
+					throw new Error('could not create directory');
+				}
+			} catch (e) {
+				err = e;
+			}
+			return callback(err);
+		}, 0);
+	};
+} else {
+	fs.mkdir = function mkdir(path, mode, callback) {
+		callback = maybeCallback(arguments[arguments.length-1]);
+		setTimeout(function() {
+			var err = null;
+			try {
+				if (!$F.getFile(path).createDirectory()) {
+					err = new Error('could not create directory');
+				}
+			} catch (e) {
+				err = e;
+			}
+			return callback(err);
+		}, 0);
+	};
+}
 
 if (IS_ANDROID) {
 	fs.mkdirSync = function mkdirSync(path, mode) {
