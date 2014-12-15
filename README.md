@@ -14,6 +14,7 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 ## support
 
 > **IMPORTANT: ** The Android support is not accurate. Updates coming soon.
+![support chart](http://i.imgur.com/Z5vtb4Y.png)
 
 ![support chart](http://cl.ly/image/1N3Y0Z3o0Q1j/support.html.png)
 
