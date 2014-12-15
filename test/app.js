@@ -445,9 +445,7 @@ describe('ti-fs', function() {
 
 	it('#mkdirSync', function() {
 		var filepath = (IS_IOS ? '' : DATA_DIR) + 'mkdirSync';
-		console.log(filepath);
 		(function() {
-			console.log(filepath);
 			fs.mkdirSync(filepath);
 		}).should.not.throw();
 		fs.existsSync(filepath).should.be.true;

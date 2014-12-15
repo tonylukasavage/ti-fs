@@ -246,7 +246,6 @@ fs.rename = function rename(oldPath, newPath, callback) {
 			good = false;
 		try {
 			good = $F.getFile(oldPath).move(newPath);
-			console.log('good: ' + good);
 			if (!good) {
 				err = new Error('could not move file');
 			}
