@@ -429,7 +429,7 @@ describe('ti-fs', function() {
 	});
 
 	it('#mkdir', function(done) {
-		var filepath = DATA_DIR + 'mkdir';
+		var filepath = (IS_IOS ? '' : DATA_DIR) + 'mkdir';
 		fs.mkdir(filepath, function(err) {
 			should.not.exist(err);
 			fs.existsSync(filepath).should.be.true;
@@ -444,7 +444,8 @@ describe('ti-fs', function() {
 	});
 
 	it('#mkdirSync', function() {
-		var filepath = DATA_DIR + 'mkdirSync';
+		var filepath = (IS_IOS ? '' : DATA_DIR) + 'mkdirSync';
+		console.log(filepath);
 		(function() {
 			console.log(filepath);
 			fs.mkdirSync(filepath);
