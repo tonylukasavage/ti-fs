@@ -186,10 +186,16 @@ describe('ti-fs', function() {
 
 		it('opens writable fds', function(done) {
 			async.each(['w', 'w+', 'wx', 'wx+', 'a', 'a+', 'ax', 'ax+'], function(flag, cb) {
-				fs.open(FILE, flag, function(err, fd) {
+				fs.open(DATA_DIR + FILE, flag, function(err, fd) {
 					should.not.exist(err);
 					fd.apiName.should.equal('Ti.Filesystem.FileStream');
-					fd.isReadable().should.be.false;
+
+					if (IS_ANDROID) {
+						fd.isReadable().should.be.true;
+					} else {
+						fd.isReadable().should.be.false;
+					}
+
 					fd.isWritable().should.be.true;
 					fs.close(fd, function(err) {
 						should.not.exist(err);
@@ -232,7 +238,13 @@ describe('ti-fs', function() {
 				var fd = fs.openSync(Ti.Filesystem.getFile(
 					Ti.Filesystem.applicationDataDirectory, FILE).resolve(), flag);
 				fd.apiName.should.equal('Ti.Filesystem.FileStream');
-				fd.isReadable().should.be.false;
+
+				if (IS_ANDROID) {
+					fd.isReadable().should.be.true;
+				} else {
+					fd.isReadable().should.be.false;
+				}
+
 				fd.isWritable().should.be.true;
 				fs.closeSync(fd);
 			});
