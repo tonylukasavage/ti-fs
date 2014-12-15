@@ -1077,9 +1077,6 @@ fs.mkdir = function mkdir(path, mode, callback) {
 	setTimeout(function() {
 		var err = null;
 		try {
-			// if (!$F.getFile(path).createDirectory()) {
-			// 	err = new Error('could not create directory');
-			// }
 			fs.mkdirSync(path, mode);
 		} catch (e) {
 			err = e;
