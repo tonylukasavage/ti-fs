@@ -13,7 +13,7 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ## support
 
-![support chart](http://i.imgur.com/DOaPYFX.png)
+![support chart](http://i.imgur.com/KNl7SB7.png)
 
 * \* see [issue #7](https://github.com/tonylukasavage/ti-fs/issues/7) for details on `lstat` and `lstatSync`
 * \*\* see [issue #6](https://github.com/tonylukasavage/ti-fs/issues/6) for details on `readlink` and `readlinkSync`
