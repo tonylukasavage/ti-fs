@@ -13,23 +13,19 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ## support
 
-> **IMPORTANT: ** The Android support is not accurate. Updates coming soon.
 ![support chart](http://i.imgur.com/Z5vtb4Y.png)
 
-![support chart](http://cl.ly/image/1N3Y0Z3o0Q1j/support.html.png)
-
-\* see [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5) for details on `realpath`
+\* see [issue #7](https://github.com/tonylukasavage/ti-fs/issues/7) for details on `lstat` and `lstatSync`
+\*\* see [issue #6](https://github.com/tonylukasavage/ti-fs/issues/6) for details on `readlink` and `readlinkSync`
+\*\*\* see [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5) for details on `realpath` and `realpathSync`
 
 ## assumptions
 
-In the absence of a Titanium implementation of the node.js `buffer` module, the following assumptions are made:
-
-* All `buffer` buffers are assumed to be [Ti.Buffer][] instances.
+* All `buffer` buffers are assumed to be [Ti.Buffer][] instances, in the absence of a Titanium implementation of the node.js `buffer` module.
 * All `fd` file descriptors are assumed to be [Ti.Filesystem.FileStream][] instances.
 
 ## caveats
 
-* `lstat` and `lstatSync` do the same thing as `stat` and `statSync`, since Titanium doesn't make a distinction between a file and a symbolic link to a file. You can identify a symbolic link, but you can't evaluate it directly, only the file to which it links.
 * Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions:
 	* `read | readSync`
 	* `write | writeSync`
@@ -37,15 +33,13 @@ In the absence of a Titanium implementation of the node.js `buffer` module, the 
 	* `hex`
 	* `ucs2 | ucs-2`
 	* `utf16le | utf-16le`
-* `readlink` and `readlinkSync` will throw an error if used on non-symbolic links, as expected, but will not returned the source path. Titanium has no means to return the source path of the symbolic link, so the result of [Ti.Filesystem.File.resolve()][] is returned.
-* `realpath` and `realpathSync` simply return the result of [Ti.Filesystem.File.resolve()][]. The details of what is necessary to completely implement them is in [issue #5](https://github.com/tonylukasavage/ti-fs/issues/5)
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 * Run all linting and tests with [grunt](http://gruntjs.com/getting-started).
 * Add tests for any new implemented functionality.
 * In lieu of an actual style guide, please follow the existing conventions used in the code.
-* Anything interface not part of the node.js `fs` module will be rejected.
+* Any interface not part of the node.js `fs` module will be rejected.
 
 [browserify]: https://github.com/substack/node-browserify
 [Ti.Blob]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Blob
