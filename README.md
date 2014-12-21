@@ -24,13 +24,8 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ## caveats
 
-* Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions:
-	* `read | readSync`
-	* `write | writeSync`
-* The following encodings are not currently supported, though could be if requests are made in the issues:
-	* `hex`
-	* `ucs2 | ucs-2`
-	* `utf16le | utf-16le`
+* Titanium streams (in this case [Ti.Filesystem.FileStream][]) do not support the `position` property in any of the following functions: **\[read, readSync, write, writeSync\]**
+* The following encodings are not currently supported, though could be if requests are made in the issues: **\[hex, ucs2, ucs-2, utf16le, utf-16le\]**
 
 ## contribute [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
