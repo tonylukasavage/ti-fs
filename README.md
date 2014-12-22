@@ -33,6 +33,7 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 * Add tests for any new implemented functionality.
 * In lieu of an actual style guide, please follow the existing conventions used in the code.
 * Any interface not part of the node.js `fs` module will be rejected.
+* If any implementations require specific versions of the Titanium SDK and/or specific mobile platforms, be sure to both handle that condition, and make sure to note it in your pull reuquest.
 
 [browserify]: https://github.com/substack/node-browserify
 [Ti.Blob]: http://docs.appcelerator.com/titanium/latest/#!/api/Titanium.Blob
