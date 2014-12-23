@@ -11,6 +11,8 @@ $ cp node_modules/ti-fs/ti-fs.js /path/to/project/Resources/
 
 ## support
 
+`ti-fs` is officially supported on Titanium SDK 3.4.0+, but likely supports earlier versions.
+
 ![support chart](http://i.imgur.com/KNl7SB7.png)
 
 * \* see [issue #7](https://github.com/tonylukasavage/ti-fs/issues/7) for details on `lstat` and `lstatSync`
