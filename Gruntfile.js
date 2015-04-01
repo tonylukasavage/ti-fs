@@ -2,6 +2,14 @@ var fs = require('fs');
 
 module.exports = function(grunt) {
 
+  var sdk = grunt.option('sdk');
+
+  var titaniumOptions = {};
+
+  if (sdk) {
+    titaniumOptions.sdk = sdk;
+  }
+
   // Project configuration.
   grunt.initConfig({
     jshint: {
@@ -19,6 +27,10 @@ module.exports = function(grunt) {
     },
     ti_run: {
       app: {
+        options: {
+          create: titaniumOptions,
+          build: titaniumOptions
+        },
         files: {
           'tmp/app/Resources': ['ti-fs.js', 'test/app.js', 'test/file.txt',
             'node_modules/should/should.js', 'node_modules/ti-mocha/ti-mocha.js',
