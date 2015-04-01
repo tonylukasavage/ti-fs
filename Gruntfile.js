@@ -29,7 +29,9 @@ module.exports = function(grunt) {
       app: {
         options: {
           create: titaniumOptions,
-          build: titaniumOptions
+          build: titaniumOptions,
+          failure: /(TESTS WITH FAILURES|Project failed to build)/i,
+          success: /TESTS ALL OK/i
         },
         files: {
           'tmp/app/Resources': ['ti-fs.js', 'test/app.js', 'test/file.txt',

@@ -857,8 +857,13 @@ describe('ti-fs', function() {
 
 });
 
-mocha.run(function() {
-	Ti.API.info('[TESTS COMPLETE]');
+mocha.run(function (failures) {
+	if (failures > 0) {
+		Ti.API.error('[TESTS WITH FAILURES]');
+	}
+	else {
+		Ti.API.error('[TESTS ALL OK]');
+	}
 });
 
 function statFileTxt(stats) {
