@@ -640,7 +640,14 @@ describe('ti-fs', function() {
 			fs.appendFile(filepath, Ti.createBuffer({ value: '123456789' }), function(err) {
 				should.not.exist(err);
 				fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some123456789');
-				return done();
+
+				var freshFilepath = DATA_DIR + 'freshAppendFile.txt';
+				if (fs.existsSync(freshFilepath)) { fs.unlinkSync(freshFilepath); }
+				fs.appendFile(freshFilepath, 'this is my append text', function(err) {
+					should.not.exist(err);
+					fs.readFileSync(freshFilepath, 'utf8').should.equal('this is my append text');
+					return done();
+				});
 			});
 		});
 	});
@@ -653,6 +660,11 @@ describe('ti-fs', function() {
 		fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some');
 		fs.appendFileSync(filepath, Ti.createBuffer({ value: '123456789' }));
 		fs.readFileSync(filepath, 'utf8').should.equal('this is my text and then some123456789');
+
+		var freshFilepath = DATA_DIR + 'freshAppendFile.txt';
+		if (fs.existsSync(freshFilepath)) { fs.unlinkSync(freshFilepath); }
+		fs.appendFileSync(freshFilepath, 'this is my append text');
+		fs.readFileSync(freshFilepath, 'utf8').should.equal('this is my append text');
 	});
 
 	it('#realpathSync', function() {

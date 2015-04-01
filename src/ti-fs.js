@@ -162,8 +162,13 @@ fs.open = function open(path, flags, mode, callback) {
 
 fs.openSync = function openSync(path, flags, mode) {
 	var tiMode = assertFlags(flags),
-		file = $F.getFile(path),
-		fd = file.open(tiMode);
+		file = $F.getFile(path);
+
+	if (tiMode === $F.MODE_APPEND && !fs.existsSync(path)) {
+		file.open($F.MODE_WRITE).close();
+	}
+
+	var fd = file.open(tiMode);
 	fd.__path = path;
 	return fd;
 };
